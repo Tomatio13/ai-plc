@@ -20,12 +20,12 @@ Claude Code / Cursor / Codex 環境で動作するスキル群として提供さ
 
 ## 関連ファイル
 
-### Persistent Memory（`.claude/` 直下）
+### Persistent Memory（`{{agent_home}}/` 直下）
 - `soul.md` — AIの行動原則・アイデンティティ
 - `user.md` — ユーザーモデル
 - `memory.md` — 蓄積型知見 → wiki/ へのポインタ
 
-### Rules（`.claude/rules/`）
+### Rules（tool-local rules directory）
 - `ai-plc-system.md` — ルートシステムルール（§1〜§20）
 - `ai-plc-session.md` — セッション管理ルール
 - `ai-plc-adaptive.md` — Adaptive Workflow + 深度判定
@@ -34,7 +34,7 @@ Claude Code / Cursor / Codex 環境で動作するスキル群として提供さ
 - `templates/roles/` — ロールテンプレート（PM / architect / developer / content / tech_lead / generic）
 - `templates/agents/` — エージェントテンプレート（research / implementation / coding / review / content / operation / task_patterns）
 
-### Knowledge Wiki（`.claude/wiki/` / `.cursor/wiki/` / `.codex/wiki/`）
+### Knowledge Wiki（`{{agent_home}}/wiki/`）
 - `index.md` — 全トピック索引
 - トピックページ群（運用知見・判断パターン・PJ横断の学び）
 

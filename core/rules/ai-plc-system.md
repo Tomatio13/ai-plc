@@ -9,6 +9,15 @@
 >
 > **ロード方式:** 自動（全スキル実行時に自動読み込み）
 AI-PLCパイプラインの全スキルが従う**共通実行ルール**を定義する。プロジェクト横断で適用される基盤設定。
+
+### 論理パス定義
+
+- `{{agent_home}}` = 使用中のエージェントツールが管理するローカル作業ディレクトリ
+- 例:
+  - Claude Code: `.claude`
+  - Cursor: `.cursor`
+  - Codex: `.codex`
+- 新しいツールを追加するときは、この対応表だけ更新し、以降のルール本文は `{{agent_home}}` を使う
 ---
 ## 1. AI-PLCの目的
 > 🚨 **AI-PLCの目的は「実際に動く成果物」を作ること**
@@ -122,9 +131,9 @@ graph TD
 > ローカルワークスペース配下の記憶ファイルを通じて、プロジェクト横断で知見・アイデンティティ・ユーザーモデルを維持する。
 ### 読み取りルール
 - セッション開始時、Instructionから@mention経由で自動ロード
-- SKL実行時、`.claude/memory.md` / `.cursor/memory.md` / `.codex/memory.md` の関連セクションを参照して過去の知見を活用
-- 行動原則は `.claude/soul.md` / `.cursor/soul.md` / `.codex/soul.md` を正本として参照する
-- ユーザーモデルは `.claude/user.md` / `.cursor/user.md` / `.codex/user.md` に基づいて対応を調整する
+- SKL実行時、`{{agent_home}}/memory.md` の関連セクションを参照して過去の知見を活用
+- 行動原則は `{{agent_home}}/soul.md` を正本として参照する
+- ユーザーモデルは `{{agent_home}}/user.md` に基づいて対応を調整する
 ### [memory.md](http://memory.md)書き込みルール
 **追記条件（**[**以下の場合にmemory.md**](http://以下の場合にmemory.md)**に追記）:**
 1. バグを発見・修正したとき → 「AI-PLC運用知見」に追記
@@ -160,8 +169,8 @@ SKL_plc_04_operation Phase 7では、以下のチェックリストを**必ず�
 - [ ] [**memory.md**](http://memory.md)**:** セッション中に学んだ知見があれば追記（確認必須。なければ「新規知見なし」と出力）
 - [ ] [**user.md**](http://user.md)**:** 新しい好み・パターンがあれば更新（確認必須。なければ「変更なし」と出力）
 - [ ] **External Sync:** intent.yamlの`sync_targets`を**必ず読み込んで確認**。定義があれば同期実行、なければ「未定義→スキップ」と出力
-- [ ] **Wiki波及更新:** 成果物から得た知見を `.claude/wiki/` / `.cursor/wiki/` / `.codex/wiki/` の関連トピックに追記 + バックリンク追加 + [log.md](http://log.md)更新（§11参照）。新規性なければ「新規性なし」と出力
-- [ ] **Project Registry更新:** PJ全タスク完了時のみ、ローカルの Project Registry（例: `.claude/db/ai_plc.db` の `projects` テーブル）に完了状態を反映
+- [ ] **Wiki波及更新:** 成果物から得た知見を `{{agent_home}}/wiki/` の関連トピックに追記 + バックリンク追加 + [log.md](http://log.md)更新（§11参照）。新規性なければ「新規性なし」と出力
+- [ ] **Project Registry更新:** PJ全タスク完了時のみ、ローカルの Project Registry（例: `{{agent_home}}/db/ai_plc.db` の `projects` テーブル）に完了状態を反映
 ### §18 3層検証との連動
 Phase 7（Propagation）の前に、必ず**Phase 5.5: Verification（§18準拠の3層検証）**を実行すること。検証が完了していない成果物についてPropagationを実行してはならない。
 **タイミング:** SKL_plc_04_operationのPhase 5.5（Verification）→ Phase 6（Status Update）→ Phase 7（Propagation）の順で必ず実行。
@@ -268,7 +277,7 @@ sync_targets: []
 ```yaml
 sync_targets:
   - type: sqlite
-    target_url: ".claude/db/ai_plc.db"
+    target_url: "{{agent_home}}/db/ai_plc.db"
     mapping:
       title: "タスク名"
       status: "ステータス"
@@ -285,7 +294,7 @@ sync_targets:
 ## 10. 🧹 Knowledge Lint ルール
 > 🧹 **Karpathy Second BrainのLintワークフロー。**
 >
-> `.claude/wiki/` / `.cursor/wiki/` / `.codex/wiki/` 配下の知識ベースの健全性を月次で検証する。
+> `{{agent_home}}/wiki/` 配下の知識ベースの健全性を月次で検証する。
 >
 > **実行タイミング:** SKL_plc_04_operation Phase 8 として実行。月次推奨。
 >
@@ -297,7 +306,7 @@ sync_targets:
 - [ ] 🔵 **未説明概念** — 他ページで言及されているが専用トピックがない概念を特定
 - [ ] 🔵 **欠落相互参照** — 関連すべきトピック間のリンクが欠落しているペアを検出
 ### Lintレポート出力形式
-レポートは `.claude/wiki/lint-report-YYYY-MM.md` / `.cursor/wiki/lint-report-YYYY-MM.md` / `.codex/wiki/lint-report-YYYY-MM.md` として作成。以下のフォーマットに従う:
+レポートは `{{agent_home}}/wiki/lint-report-YYYY-MM.md` として作成。以下のフォーマットに従う:
 ```markdown
 # Knowledge Lint Report - YYYY-MM
 

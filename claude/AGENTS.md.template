@@ -5,18 +5,19 @@
 
 - Use local workspace files as the primary source of truth.
 - Treat external systems as optional integration targets, not required runtime dependencies.
-- Record durable knowledge in the environment-local knowledge store:
-  - Claude Code: `.claude/wiki/`, `.claude/memory.md`, `.claude/user.md`, `.claude/soul.md`
-  - Codex: `.codex/wiki/`, `.codex/memory.md`, `.codex/user.md`, `.codex/soul.md`
+- Record durable knowledge in `{{agent_home}}/wiki/`, `{{agent_home}}/memory.md`, `{{agent_home}}/user.md`, and `{{agent_home}}/soul.md`.
+- Resolve `{{agent_home}}` by tool:
+  - Claude Code: `.claude`
+  - Codex: `.codex`
 
 ### 4-Stage Pipeline
 
-| Stage | Claude Code | Codex |
-|-------|-------------|-------|
-| Collection | `.claude/skills/ai-plc/01-collection/SKILL.md` | `.codex/skills/ai-plc/01-collection/SKILL.md` |
-| Inception | `.claude/skills/ai-plc/02-inception/SKILL.md` | `.codex/skills/ai-plc/02-inception/SKILL.md` |
-| Construction | `.claude/skills/ai-plc/03-construction/SKILL.md` | `.codex/skills/ai-plc/03-construction/SKILL.md` |
-| Operation | `.claude/skills/ai-plc/04-operation/SKILL.md` | `.codex/skills/ai-plc/04-operation/SKILL.md` |
+| Stage | Skill |
+|-------|-------|
+| Collection | `{{agent_home}}/skills/ai-plc/01-collection/SKILL.md` |
+| Inception | `{{agent_home}}/skills/ai-plc/02-inception/SKILL.md` |
+| Construction | `{{agent_home}}/skills/ai-plc/03-construction/SKILL.md` |
+| Operation | `{{agent_home}}/skills/ai-plc/04-operation/SKILL.md` |
 
 ### Agents
 
