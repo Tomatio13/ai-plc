@@ -4,7 +4,7 @@
 
 この変更では、AI-PLC の運用前提を **Notion中心** から **Local-first** に移行した。
 
-現在は、`intent.yaml` / `backlog.yaml` / `context.yaml` / `Documents/` / `.claude/wiki/` / `.cursor/wiki/` を正本として扱う。
+現在は、`intent.yaml` / `backlog.yaml` / `context.yaml` / `Documents/` / `.claude/wiki/` / `.cursor/wiki/` / `.codex/wiki/` を正本として扱う。
 
 外部システム連携は `sync_targets` を明示設定した場合のみ有効で、未設定時の既定値は `sync_targets: []` である。
 
@@ -25,8 +25,10 @@
 ### 2. 永続メモリの正本
 
 - 変更前: `.notion` 配下や Notion ページ参照が前提
-- 変更後: `.claude/memory.md`、`.claude/user.md`、`.claude/soul.md`、`.claude/wiki/`
-- Cursor 側では `.cursor/wiki/` を利用
+- 変更後:
+  - Claude Code: `.claude/memory.md`、`.claude/user.md`、`.claude/soul.md`、`.claude/wiki/`
+  - Cursor: `.cursor/memory.md`、`.cursor/user.md`、`.cursor/soul.md`、`.cursor/wiki/`
+  - Codex: `.codex/memory.md`、`.codex/user.md`、`.codex/soul.md`、`.codex/wiki/`
 
 ### 3. External Sync の既定動作
 
@@ -37,7 +39,7 @@
 ### 4. Knowledge Lint / Wiki 運用
 
 - 変更前: `.notion/wiki/` を対象に運用
-- 変更後: `.claude/wiki/` または `.cursor/wiki/` を対象に運用
+- 変更後: `.claude/wiki/` / `.cursor/wiki/` / `.codex/wiki/` を対象に運用
 - 月次 Lint は cron / Task Runner などのローカル実行を前提とする
 
 ### 5. Project Registry
@@ -66,7 +68,7 @@
 ### 必須
 
 - `sync_targets` を Notion 前提で自動投入している運用がないか確認する
-- `.claude/wiki/` または `.cursor/wiki/` が存在することを確認する
+- `.claude/wiki/` / `.cursor/wiki/` / `.codex/wiki/` のいずれかが存在することを確認する
 - 運用上の「完了条件」が Notion 更新を必須にしていないか確認する
 
 ### 必要に応じて
@@ -86,7 +88,7 @@
 1. `backlog.yaml` でタスク状態を管理する
 2. `Documents/` に成果物を保存する
 3. `context.yaml` と `Context/` で実行コンテキストを保持する
-4. `.claude/wiki/` または `.cursor/wiki/` に知見を蓄積する
+4. `.claude/wiki/` / `.cursor/wiki/` / `.codex/wiki/` に知見を蓄積する
 5. 外部連携が必要な場合のみ `sync_targets` を設定する
 
 ## 補足

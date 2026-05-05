@@ -233,7 +233,7 @@ Goalの複雑度を自動分析し、パイプライン全体のワークフロ�
 ### Phase 4.5: Wiki波及更新（Karpathy Ingest原則）
 > 🌊 **「1ソースが10-15 wikiページにタッチ」原則**（Karpathy Second Brain）
 >
-> Context収集で新しい知見を得たら、`.claude/wiki/` または `.cursor/wiki/` 配下の関連トピックページに波及更新する。
+> Context収集で新しい知見を得たら、`.claude/wiki/` / `.cursor/wiki/` / `.codex/wiki/` 配下の関連トピックページに波及更新する。
 >
 > 詳細: [RUL_plc_system](../../../rules/ai-plc-system.md) §11
 **実行フロー:**
@@ -475,7 +475,7 @@ Intent + Context Manifest + Context Store を **Stage 2: SKL_plc_02_inception** 
 > 3. \[Sub-Agent Scope\] 親Context Storeを読み込み、Hierarchical Context Cascadeルールで継承
 > 4. Context Storeにカテゴリ別ドキュメントとして格納
 > ### Phase 4.5: Wiki波及更新
-> 1. `.claude/wiki/index.md` または `.cursor/wiki/index.md` を読み込み
+> 1. `.claude/wiki/index.md` / `.cursor/wiki/index.md` / `.codex/wiki/index.md` を読み込み
 > 2. 収集コンテキストに関連するトピックを特定
 > 3. 各関連トピックに新知見を追記 + バックリンク追加
 > 4. 必要なら新規トピック作成 + [index.md](http://index.md)更新

@@ -1,6 +1,6 @@
 # 🧠 memory.md → Wikiポインタ
 
-> **知識の蓄積は `.claude/wiki/` (or `.cursor/wiki/`) 配下で管理。**
+> **知識の蓄積は `.claude/wiki/` / `.cursor/wiki/` / `.codex/wiki/` 配下で管理。**
 > このページはナビゲーションポインタ。
 
 ---

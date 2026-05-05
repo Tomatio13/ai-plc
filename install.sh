@@ -2,8 +2,8 @@
 set -euo pipefail
 
 # AI-PLC Universal Installer
-# Detects environment (Claude Code / Cursor) and runs the appropriate installer.
-# Usage: ./install.sh [--dry-run] [--target /path/to/project] [cc|cursor|both]
+# Detects environment (Claude Code / Cursor / Codex) and runs the appropriate installer.
+# Usage: ./install.sh [--dry-run] [--target /path/to/project] [cc|cursor|codex|all]
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 VERSION="$(cat "$SCRIPT_DIR/.ai-plc-version" 2>/dev/null || echo "unknown")"
@@ -15,16 +15,18 @@ while [[ $# -gt 0 ]]; do
     case "$1" in
         --dry-run) DRY_RUN="--dry-run"; shift ;;
         --target) TARGET_ARGS="--target $2"; shift 2 ;;
-        cc|cursor|both) ENV_MODE="$1"; shift ;;
+        cc|cursor|codex|all|both) ENV_MODE="$1"; shift ;;
         -h|--help)
             echo "AI-PLC Universal Installer v${VERSION}"
             echo ""
-            echo "Usage: $0 [OPTIONS] [cc|cursor|both]"
+            echo "Usage: $0 [OPTIONS] [cc|cursor|codex|all]"
             echo ""
             echo "Environments:"
             echo "  cc       Install for Claude Code only"
             echo "  cursor   Install for Cursor only"
-            echo "  both     Install for both environments"
+            echo "  codex    Install for Codex only"
+            echo "  all      Install for all supported environments"
+            echo "  both     Alias for all"
             echo "  (none)   Auto-detect and prompt"
             echo ""
             echo "Options:"
@@ -49,26 +51,31 @@ if [[ -z "$ENV_MODE" ]]; then
 
     HAS_CC=false
     HAS_CURSOR=false
+    HAS_CODEX=false
     [[ -d "$TARGET_DIR/.claude" ]] && HAS_CC=true
     [[ -d "$TARGET_DIR/.cursor" ]] && HAS_CURSOR=true
+    [[ -d "$TARGET_DIR/.codex" ]] && HAS_CODEX=true
 
     echo "Detected environment:"
     $HAS_CC && echo "  ✅ Claude Code (.claude/ found)"
     $HAS_CURSOR && echo "  ✅ Cursor (.cursor/ found)"
-    ! $HAS_CC && ! $HAS_CURSOR && echo "  📁 No existing config detected (will create new)"
+    $HAS_CODEX && echo "  ✅ Codex (.codex/ found)"
+    ! $HAS_CC && ! $HAS_CURSOR && ! $HAS_CODEX && echo "  📁 No existing config detected (will create new)"
     echo ""
 
     echo "Select installation target:"
     echo "  1) Claude Code only"
     echo "  2) Cursor only"
-    echo "  3) Both"
+    echo "  3) Codex only"
+    echo "  4) All"
     echo ""
-    read -r -p "Enter choice [1-3]: " choice
+    read -r -p "Enter choice [1-4]: " choice
 
     case "$choice" in
         1) ENV_MODE="cc" ;;
         2) ENV_MODE="cursor" ;;
-        3) ENV_MODE="both" ;;
+        3) ENV_MODE="codex" ;;
+        4) ENV_MODE="all" ;;
         *) echo "Invalid choice."; exit 1 ;;
     esac
 fi
@@ -80,11 +87,17 @@ case "$ENV_MODE" in
     cursor)
         bash "$SCRIPT_DIR/install-cursor.sh" $DRY_RUN $TARGET_ARGS
         ;;
-    both)
+    codex)
+        bash "$SCRIPT_DIR/install-codex.sh" $DRY_RUN $TARGET_ARGS
+        ;;
+    all|both)
         echo "=== Installing for Claude Code ==="
         bash "$SCRIPT_DIR/install-cc.sh" $DRY_RUN $TARGET_ARGS
         echo ""
         echo "=== Installing for Cursor ==="
         bash "$SCRIPT_DIR/install-cursor.sh" $DRY_RUN $TARGET_ARGS
+        echo ""
+        echo "=== Installing for Codex ==="
+        bash "$SCRIPT_DIR/install-codex.sh" $DRY_RUN $TARGET_ARGS
         ;;
 esac

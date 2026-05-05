@@ -5,18 +5,22 @@
 
 - Use local workspace files as the primary source of truth.
 - Treat external systems as optional integration targets, not required runtime dependencies.
-- Record durable knowledge in `.claude/wiki/`, `.claude/memory.md`, `.claude/user.md`, and `.claude/soul.md`.
+- Record durable knowledge in the environment-local knowledge store:
+  - Claude Code: `.claude/wiki/`, `.claude/memory.md`, `.claude/user.md`, `.claude/soul.md`
+  - Codex: `.codex/wiki/`, `.codex/memory.md`, `.codex/user.md`, `.codex/soul.md`
 
 ### 4-Stage Pipeline
 
-| Stage | Skill | Purpose |
-|-------|-------|---------|
-| Collection | `.claude/skills/ai-plc/01-collection/SKILL.md` | Goal設定・Context収集・Execution Context確立 |
-| Inception | `.claude/skills/ai-plc/02-inception/SKILL.md` | Goal分解・Backlog生成 |
-| Construction | `.claude/skills/ai-plc/03-construction/SKILL.md` | Agent定義生成・実行計画策定 |
-| Operation | `.claude/skills/ai-plc/04-operation/SKILL.md` | タスク実行・成果物生成 |
+| Stage | Claude Code | Codex |
+|-------|-------------|-------|
+| Collection | `.claude/skills/ai-plc/01-collection/SKILL.md` | `.codex/skills/ai-plc/01-collection/SKILL.md` |
+| Inception | `.claude/skills/ai-plc/02-inception/SKILL.md` | `.codex/skills/ai-plc/02-inception/SKILL.md` |
+| Construction | `.claude/skills/ai-plc/03-construction/SKILL.md` | `.codex/skills/ai-plc/03-construction/SKILL.md` |
+| Operation | `.claude/skills/ai-plc/04-operation/SKILL.md` | `.codex/skills/ai-plc/04-operation/SKILL.md` |
 
 ### Agents
+
+Use these names as task roles regardless of tool. In Claude Code they map to `.claude/agents/*.md`; in Codex they are role conventions referenced from `AGENTS.md`.
 
 | Agent | File | Trigger |
 |-------|------|---------|

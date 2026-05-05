@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # AI-PLC Uninstaller
-# Removes AI-PLC files from Claude Code and/or Cursor project.
+# Removes AI-PLC files from Claude Code, Cursor, and/or Codex project.
 # Usage: ./uninstall.sh [--dry-run] [--target /path/to/project]
 
 DRY_RUN=false
@@ -100,6 +100,10 @@ for rule in "$TARGET_DIR"/.cursor/rules/ai-plc-*.mdc; do
 done
 
 echo ""
+echo "Codex files:"
+safe_remove "$TARGET_DIR/.codex/skills/ai-plc"
+
+echo ""
 echo "Shared files:"
 safe_remove "$TARGET_DIR/.ai-plc-version"
 
@@ -107,5 +111,7 @@ echo ""
 echo "⚠️  The following files were NOT removed (may contain your customizations):"
 echo "   .claude/soul.md, .claude/user.md, .claude/memory.md, .claude/wiki/"
 echo "   .claude/commands/, .claude/agents/"
+echo "   .cursor/soul.md, .cursor/user.md, .cursor/memory.md, .cursor/wiki/"
+echo "   .codex/soul.md, .codex/user.md, .codex/memory.md, .codex/wiki/"
 echo ""
 echo "✨ AI-PLC uninstalled."
