@@ -1,0 +1,10 @@
+# Local agent/tool state
+.serena/
+.codex/
+.agents/
+
+# Editor / OS
+.DS_Store
+
+# Backup files created by installers
+*.bak.*

@@ -32,7 +32,7 @@ keywords:
 | --- | --- | --- |
 | 調査・CLI実行（読み取り系） | ✅ | コードベース分析・インフラ確認に必要 |
 | 設計書・アーキテクチャ図作成 | ✅ | アーキテクチャ設計が主責務 |
-| DB設計・スキーマ定義 | ✅ | Notion DB / データモデル設計 |
+| DB設計・スキーマ定義 | ✅ | SQLite / RDB / データモデル設計 |
 | コード実装・ファイル編集 | ❌ | 実装はdeveloperの責務 |
 | NFR判定・Extension決定 | ✅ | セキュリティ・パフォーマンス要件の判定 |
 
@@ -49,7 +49,7 @@ Flow: Collection（現状確認）→ Operation（即実行）
 検証: L1のみ
 ```
 
-### Pattern B: Standard（新規DB設計・Notion構築・中規模システム）
+### Pattern B: Standard（新規DB設計・運用フロー構築・中規模システム）
 
 ```javascript
 Role: system_architect
@@ -177,7 +177,7 @@ SubLayers: サブシステム別 / 技術スタック別 / フェーズ別
 
 - **architect** = **何を作るか**（What）— アーキテクチャ図・技術選定・NFR判定
 - **tech_lead** = **どう分けて進めるか**（How to organize）— SubLayer分割・Skip判定・実行順序
-- 詳細: [TPL_role_tech_lead](https://www.notion.so/45c015261a2245a38a95af0eb7d03858)
+- 詳細: `TPL_role_tech_lead`
 
 ---
 

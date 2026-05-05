@@ -33,7 +33,7 @@
 
 ### Output
 
-- 分析レポート（Notionページ）
+- 分析レポート（Markdownドキュメント）
 - 知見サマリ（Context Storeに追加）
 - 次アクション提案
 

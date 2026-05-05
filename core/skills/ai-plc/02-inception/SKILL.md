@@ -1,4 +1,4 @@
-> 🏷️ **Project:** [AI-PLC Project](https://www.notion.so/268b133701be808a81bce066ce075281)
+> 🏷️ **Project:** AI-PLC Project
 > **Type:** command
 > **Context:** AI-PLC Stage 2 — Inception。Goal分析と再帰的分解ステージ。Intent + Context Storeを受け取り、Decomposition Strategyに基づきBacklog（タスク定義）とSub-Agent Registry（SubLayer群）を生成する。
 > 🔗 **必須コンテキスト（このスキル実行時に自動読み込み）**
@@ -15,7 +15,7 @@
 >
 > **Jeff Patton対応:** Focus（優先順位付け・焦点化）
 >
-> **対応する旧CMD:** [CMD_aipo_02_focus](https://www.notion.so/a0a355ef141d4668946f51a9a1382f9d)
+> **対応する旧CMD:** CMD_aipo_02_focus
 >
 > **AI-DLC対応:** Inception Phase（Intent収集 + SubLayer分解）
 Goalを分析し、**再帰的エージェント・デリゲーション**（Fractal Decomposition）パターンに基づいてSub-Agent Scope（SubLayer）とTask（実行単位）に分解する。Decomposition Strategy（Adaptive Workflow）の選択により、分解の粒度と方向性を制御する。
@@ -99,11 +99,11 @@ Backlog生成後、各タスクを以下の基準で判定:
 | **判定** | **基準** | **アクション** |
 | --- | --- | --- |
 | ✅ PJ内実行 | このLayerのAI/オーナーが実行する | そのままBacklogに残す |
-| 📤 外部委譲 | 別の実行者（エンジニア・デザイナー・別チーム）がやるべき | **External Syncを促す** → Self-Describing構造で外部DBに書き出し |
+| 📤 外部委譲 | 別の実行者（エンジニア・デザイナー・別チーム）がやるべき | **External Syncを促す** → Self-Describing構造で外部システムに書き出し |
 | ⏳ 先送り | 今はやらないが将来やる | Backlogに`deferred`ステータスで残す（Propagation時に再判定） |
 **外部委譲時の出力:**
 - [RUL_plc_system](../../../rules/ai-plc-system.md) §9のSelf-Describing Task構造に従い、コンテキスト付きチケットを生成
-- 「このタスクを外部DBに書き出しますか？」とユーザーに確認
+- 「このタスクを外部システムに書き出しますか？」とユーザーに確認
 - 承認後、sync_targetsに従って外部にpush
 ### Phase 6: Mob Checkpoint — 次ステージ提案
 1. 生成した構造を確認表示
@@ -271,7 +271,7 @@ Backlog + Sub-Agent Registry を **Stage 3: SKL_plc_03_construction** に渡す
 > - 以下のフィールドを全タスクに必須: `id` / `name` / `description` / `type` / `priority` / `status` / `owner` / `estimated_hours` / `command` / `command_template_ref` / `origin`
 > - 以下のトップレベルセクションを必須: `focus_strategy` / `focus_strategy_reason` / `focus_strategy_confirmed_by` / `decomposition_pattern` / `sublayers` / `tasks` / `summary`（task_count / p0_tasks / p1_tasks / p2_tasks / next_action）
 > - 再分解があった場合は `refactoring_log` セクションも含める
-> - 参考例: [tasks.yaml（ハーネスPJ）](https://www.notion.so/c06d7eba601644779458e9672de603a0)
+> - 参考例: tasks.yaml（ハーネスPJ）
 > 2. SubLayerフォルダを作成
 > 3. 各SubLayerに「次のステップ」セクションを含める
 > ### Phase 6: Mob Checkpoint（次ステージ提案）
@@ -306,10 +306,10 @@ Backlog + Sub-Agent Registry を **Stage 3: SKL_plc_03_construction** に渡す
 > 管理セクションのトグルヘッダーは `### 🔧 AI-PLC管理（[Scope ID]）` とすること
 ---
 ## 参照元
-- [T002_コマンド体系再定義書](https://www.notion.so/6c404df8242549df8199dadb2a187660) — Stage 2定義（本ページのベース）
-- [T003_コア原理再定義書](https://www.notion.so/e81ef93779fd4a5c85d83a93791e3dd5) — Fractal Decomposition / Context Cascade原理
-- [T007_新コマンド体系アーキテクチャ設計書](https://www.notion.so/d39600b2da7142679bc22451089aeeae) — テンプレート構造・命名規則
-- [CMD_aipo_02_focus](https://www.notion.so/a0a355ef141d4668946f51a9a1382f9d) — 旧版コマンド（対応元）
+- T002_コマンド体系再定義書 — Stage 2定義（本ページのベース）
+- T003_コア原理再定義書 — Fractal Decomposition / Context Cascade原理
+- T007_新コマンド体系アーキテクチャ設計書 — テンプレート構造・命名規則
+- CMD_aipo_02_focus — 旧版コマンド（対応元）
 ---
 **作成日:** 2026-04-07
 **ステータス:** Active

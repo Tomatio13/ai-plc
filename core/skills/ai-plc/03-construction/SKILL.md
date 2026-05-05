@@ -1,4 +1,4 @@
-> 🏷️ **Project:** [AI-PLC Project](https://www.notion.so/268b133701be808a81bce066ce075281)
+> 🏷️ **Project:** AI-PLC Project
 > **Type:** command
 > **Context:** AI-PLC Stage 3 — Construction。Backlogの各タスクに対して実行可能なスキル定義（Harness）を生成するステージ。既存テンプレートからのProgressive Context Loadingとタスク固有コンテキストに基づく動的生成を組み合わせる。
 > 🔗 **必須コンテキスト（このスキル実行時に自動読み込み）**
@@ -15,7 +15,7 @@
 >
 > **Jeff Patton対応:** Discover（実行計画の立案・検証）
 >
-> **対応する旧CMD:** [CMD_aipo_03_discover](https://www.notion.so/4dce59e7880b4e40956510012702d18e)
+> **対応する旧CMD:** CMD_aipo_03_discover
 >
 > **AI-DLC対応:** Construction Phase（Domain Design + Logical Design + コード生成）
 Backlogの各タスクに対して、**実行可能なスキル定義**（Harness）を生成するステージ。既存のSkill Template（旧command_templates）からの**Progressive Context Loading**と、タスク固有コンテキストに基づく動的生成を組み合わせる。
@@ -39,7 +39,7 @@ Backlogの各タスクに対して、**実行可能なスキル定義**（Harnes
 | **入力名** | **型** | **必須** | **説明** | **旧AIPO対応** |
 | --- | --- | --- | --- | --- |
 | Backlog | Page | ✅ | Stage 2で生成されたタスク定義 | tasks.yaml |
-| Agent Template Library | Folder | ⭕ | Agent生成テンプレート（TPL_\*）。`.notion/Templates/Agents_template/`配下 | command_templates/ |
+| Agent Template Library | Folder | ⭕ | Agent生成テンプレート（TPL_\*）。`core/skills/ai-plc/templates/agents/` 配下 | command_templates/ |
 | Existing Agents | Folder | ⭕ | 過去に生成された再利用可能なAgent定義群 | Commands/ |
 ---
 ## 処理フロー
@@ -76,7 +76,7 @@ Progressive Context Loading"]
 **判定ルール:** `agent_tier`はbacklog.yamlの`type`フィールドから自動判定。ユーザーが明示指定した場合はそちらを優先。
 ### Phase 2: Template探索（Progressive Context Loading）
 3段階の探索：
-- **Level 1:** Agent Template Library（`.notion/Templates/Agents_template/`配下のTPL_\*）
+- **Level 1:** Agent Template Library（`core/skills/ai-plc/templates/agents/` 配下の TPL_\*）
 - **Level 2:** 既存Skills（過去のハーネス定義）
 - **Level 3:** ドメイン知識テンプレート（AIPMコマンド群等）
 ### Phase 3: スキル生成計画 + Agent一括生成
@@ -114,7 +114,7 @@ Progressive Context Loading"]
 >
 > CCの`.claude/agents/*.md`では1ファイルにシステムプロンプトとして全部入る。
 >
-> NotionではAgent定義ページとしてGoal/Input/Output/Flow/Guardrails/AI実行指示を記載。
+> Agent定義はローカルMarkdownファイルとして Goal/Input/Output/Flow/Guardrails/AI実行指示を記載する。
 >
 > 詳細: [AI-PLC README](../README.md)
 ### Phase 5.5: スコープ外タスク検出 + External Sync
@@ -125,7 +125,7 @@ Agents生成中に以下のパターンを検出:
 - スコープ外だが価値がある改善点を発見 → **Product Backlogに蓄積**
 検出時のアクション:
 1. [RUL_plc_system](../../../rules/ai-plc-system.md) §9のSelf-Describing Task構造でチケットを生成
-2. 「スコープ外タスクを発見しました。外部DBに書き出しますか？」と確認
+2. 「スコープ外タスクを発見しました。外部システムに書き出しますか？」と確認
 3. 承認後、sync_targetsに従ってpush
 ### Phase 5: Mob Checkpoint — 次ステージ提案
 スキル生成完了を確認し、Stage 4: SKL_plc_04_operation への遷移を提案。
@@ -179,7 +179,7 @@ Agents を **Stage 4: SKL_plc_04_operation** に渡す
 > 2. 各タスクのcommandフィールドとcommand_template_refを確認
 > 3. 各タスクのtypeからagent_tierを自動判定（Lite: design/research/content/planning、Full: implementation/validation/complex/coding）
 > ### Phase 2: Template探索（Progressive Context Loading）
-> 1. Level 1: `.notion/Templates/`配下のAgent生成テンプレートを探索
+> 1. Level 1: `core/skills/ai-plc/templates/` 配下のAgent生成テンプレートを探索
 > 2. Level 2: 既存Agents/配下の過去Agent定義を探索
 > 3. Level 3: ドメイン知識テンプレート（AIPMコマンド群等）を探索
 > ### Phase 3: 生成計画 + Agent一括生成
@@ -239,10 +239,10 @@ Agents を **Stage 4: SKL_plc_04_operation** に渡す
 > 生成するAgent定義ページのフォルダ名は `Agents/` とすること（Commands/でもSkills/でもない）
 ---
 ## 参照元
-- [T002_コマンド体系再定義書](https://www.notion.so/6c404df8242549df8199dadb2a187660) — Stage 3定義（本ページのベース）
-- [T003_コア原理再定義書](https://www.notion.so/e81ef93779fd4a5c85d83a93791e3dd5) — Self-Describing Executable Task原理
-- [T007_新コマンド体系アーキテクチャ設計書](https://www.notion.so/d39600b2da7142679bc22451089aeeae) — テンプレート構造
-- [CMD_aipo_03_discover](https://www.notion.so/4dce59e7880b4e40956510012702d18e) — 旧版コマンド（対応元）
+- T002_コマンド体系再定義書 — Stage 3定義（本ページのベース）
+- T003_コア原理再定義書 — Self-Describing Executable Task原理
+- T007_新コマンド体系アーキテクチャ設計書 — テンプレート構造
+- CMD_aipo_03_discover — 旧版コマンド（対応元）
 ---
 **作成日:** 2026-04-07
 **ステータス:** Active

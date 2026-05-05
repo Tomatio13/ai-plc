@@ -5,6 +5,12 @@
 AI-PLC (AI Product Lifecycle) は、PMBOKのプロジェクト管理知識体系を
 AIエージェント環境（Claude Code / Cursor）向けに再設計したパイプラインシステム。
 
+## 設計方針
+
+- Local-first: 実行コンテキストと成果物はワークスペース内ファイルを正本とする
+- Tool-agnostic: 特定SaaSに依存せず、外部システム連携は任意アダプタとして扱う
+- Explicit sync: `sync_targets` が設定された場合のみ外部同期を行う
+
 ## 4ステージパイプライン
 
 ```
@@ -69,7 +75,7 @@ Parent Scope
 2. context.yaml更新
 3. memory.md チェック
 4. user.md チェック
-5. External Sync
+5. External Sync（任意）
 6. Wiki波及更新
 7. log.md更新
 
@@ -80,3 +86,10 @@ Parent Scope
 - `wiki/log.md` — append-only時系列ログ
 - CONTRADICTION検出 — 矛盾は削除せずフラグ
 - Knowledge Lint — 月次ヘルスチェック
+
+## External Sync
+
+- `sync_targets: []` が既定値
+- 外部同期先は SQLite / Linear / GitHub Issues / CSV などを明示設定して利用
+- 同期しない場合でも AI-PLC の全ステージは成立する
+- `db-sync` スキルは deprecated で、標準配布には含めない

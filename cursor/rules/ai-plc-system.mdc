@@ -14,6 +14,12 @@ This project uses AI-PLC (AI Product Lifecycle) pipeline.
 3. **Adaptive Workflow** — Simple / Standard / Complex depth auto-detection
 4. **Self-Describing Task** — Context-attached task delegation
 
+## Operating Principles
+
+1. **Local-first** — `intent.yaml`, `backlog.yaml`, `context.yaml`, and `Documents/` are the source of truth
+2. **Optional sync** — external systems are used only when `sync_targets` is explicitly configured
+3. **Local memory** — persistent knowledge is stored in local markdown/wiki files under the workspace
+
 ## Skills Location
 
 - `.cursor/skills/ai-plc/01-collection/SKILL.md` — Stage 1: Collection
@@ -56,4 +62,5 @@ After completing each task, execute the following checklist:
 2. context.yaml — Add artifact entry
 3. memory.md — Check for new knowledge
 4. user.md — Check for new preferences
-5. Wiki update — Propagate new knowledge to related topics
+5. External Sync — Only if configured
+6. Wiki update — Propagate new knowledge to related topics

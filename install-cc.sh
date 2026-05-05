@@ -75,6 +75,17 @@ safe_copy_dir() {
     cp -r "$src"/* "$dst"/ 2>/dev/null || true
 }
 
+install_skills_without_deprecated() {
+    local src="$1" dst="$2"
+    if [[ "$DRY_RUN" == true ]]; then
+        dry "copy directory $src → $dst (excluding deprecated db-sync)"
+        return
+    fi
+    mkdir -p "$dst"
+    cp -r "$src"/* "$dst"/ 2>/dev/null || true
+    rm -rf "$dst/ai-plc/db-sync"
+}
+
 safe_copy_if_missing() {
     local src="$1" dst="$2"
     if [[ -f "$dst" ]]; then
@@ -137,7 +148,7 @@ fi
 echo ""
 
 echo "📦 Step 1/7: Installing skills..."
-safe_copy_dir "$SCRIPT_DIR/core/skills" "$TARGET_DIR/.claude/skills"
+install_skills_without_deprecated "$SCRIPT_DIR/core/skills" "$TARGET_DIR/.claude/skills"
 info "Skills installed: .claude/skills/ai-plc/"
 
 echo ""
