@@ -1,4 +1,4 @@
-> 🏷️ **Project:** [AI-PLC Project](https://www.notion.so/268b133701be808a81bce066ce075281)
+> 🏷️ **Project:** AI-PLC Project
 > **Type:** command
 > **Context:** AI-PLC Stage 4 — Operation。Agent定義に従い各タスクを実行するステージ。Context Storeからのコンテキスト注入を伴い、成果物をArtifact Storeに格納する。実行中に発見されたコンテキストはContext Storeに追加される（Hierarchical Context Propagation）。
 > 🔗 **必須コンテキスト（このスキル実行時に自動読み込み）**
@@ -14,7 +14,7 @@
 >
 > **Jeff Patton対応:** Deliver（本番環境への提供）
 >
-> **対応する旧CMD:** [CMD_aipo_04_deliver](https://www.notion.so/b30b81f5182c421bbfc49840ff436430)
+> **対応する旧CMD:** CMD_aipo_04_deliver
 >
 > **AI-DLC対応:** Operation Phase（デプロイ・運用・監視）
 Agent定義に従い、各タスクを**実行**するステージ。Context Storeからのコンテキスト注入を伴い、成果物をArtifact Storeに格納する。タスク実行中に発見されたコンテキスト情報はContext Storeに追加される（**Hierarchical Context Propagation**）。
@@ -94,7 +94,7 @@ Backlogを読み込み、依存関係を解決し、実行可能タスク（依�
 - 上記を交互に繰り返し
 > 🤖 **Agentとしての実行**
 >
-> NotionではSKL的に逐次実行されるが、CCでは`Agent` toolで独立プロセスとして最大10並列起動される。
+> ローカル運用では、CCでは`Agent` toolで独立プロセスとして最大10並列起動される。
 >
 > Stage 3 Constructionで生成されたAgent定義 = CCの`.claude/agents/*.md`に相当。
 >
@@ -178,28 +178,26 @@ L1/L2/L3検証の結果を受けて、以下のBacktrack Trigger条件を判定:
 **各項目の詳細:**
 1. ✅ **backlog.yaml更新** — タスクstatus → completed + Outputリンク（Phase 6で実施済み）
 2. ✅ **context.yaml更新** — 成果物エントリ追加（ドキュメント名 + サマリー）
-3. ✅ **[memory.md](https://www.notion.so/e96fb8b4f56146b4b5a5a946262d710d)チェック** — セッション中に学んだ知見があれば追記。なければ「新規知見なし」と明示
-4. ✅ **[user.md](https://www.notion.so/ab17cd3d928c4a3696849cebcd922072)チェック** — 新しい好み・パターンがあれば更新。なければ「変更なし」と明示
+3. ✅ **`memory.md` チェック** — セッション中に学んだ知見があれば追記。なければ「新規知見なし」と明示
+4. ✅ **`user.md` チェック** — 新しい好み・パターンがあれば更新。なければ「変更なし」と明示
 5. ✅ **External Sync** — intent.yamlの`sync_targets`を**必ず読み込んで確認**。結果をログ出力:
 	- sync_targets未定義 → `「sync_targets未定義 → スキップ」`と出力
 	- sync_targets定義あり → 同期実行し結果を出力
-6. ✅ **Wiki波及更新** — 成果物から得た知見を`.notion/wiki/`の関連トピックに追記。新規性がなければ「新規性なし」と明示
+6. ✅ **Wiki波及更新** — 成果物から得た知見を `.claude/wiki/` または `.cursor/wiki/` の関連トピックに追記。新規性がなければ「新規性なし」と明示
 7. ✅ [**log.md**](http://log.md)**更新** — [Wiki更新があればlog.md](http://Wiki更新があればlog.md)にエントリ追加
 **スキップ禁止ルール:** 各項目は「実行した結果スキップが妥当」と判断することは許容するが、「確認せずにスキップ」は禁止。必ず確認→判断→結果出力の3ステップを踏むこと。
 ### Phase 8: Knowledge Lint（月次ヘルスチェック）
 > 🧹 **Karpathy Second BrainのLintワークフロー。**月次実行推奨。
 >
-> Notion環境では**カスタムエージェントの定期実行**で自動化可能。
->
-> CCでは`cron` + `claude --print`、PalmaではWFスケジュールトリガーで実現。
+> CCでは`cron` + `claude --print`、CursorではTask Runnerや`cron`で実現。
 >
 > 詳細: [RUL_plc_system](../../../rules/ai-plc-system.md) §10
 **実行フロー:**
-1. [index.md](https://www.notion.so/f3e4522534ae439e8fdf798c47de0358) を読み込み、wiki配下の全トピックページを走査
+1. `wiki/index.md` を読み込み、wiki配下の全トピックページを走査
 2. **5項目のLintチェックリスト**を実行（[RUL_plc_system](../../../rules/ai-plc-system.md) §10参照）
-3. Lintレポートを`.notion/wiki/lint-report-YYYY-MM.md`として作成
+3. Lintレポートを `.claude/wiki/lint-report-YYYY-MM.md` または `.cursor/wiki/lint-report-YYYY-MM.md` として作成
 4. 🔴重要度の問題があればオーナーに通知
-5. [log.md](https://www.notion.so/39918cbba9624a9c9488458786956bf0) に`lint`エントリを追加
+5. `wiki/log.md` に`lint`エントリを追加
 **手動実行:**
 ```javascript
 SKL_plc_04_operation Phase 8 Knowledge Lintを実行してください
@@ -294,7 +292,7 @@ SKL_plc_04_operation Phase 8 Knowledge Lintを実行してください
 >
 > 実行前に必ず以下を参照：
 > - [RUL_plc_system](../../../rules/ai-plc-system.md)（ルートシステムルール）
-> - [RUL_plc_implementation](https://www.notion.so/eb09465cc4e54ef8b2f5c684fb8ce076)（Notion擬似プログラミングガイド）
+> - [RUL_plc_system](../../../rules/ai-plc-system.md)（ルートシステムルール）
 > ---
 > **AIへの指示（このスキルが@メンションされたとき）**
 > ### Phase 1: Auto-Research
@@ -316,7 +314,7 @@ SKL_plc_04_operation Phase 8 Knowledge Lintを実行してください
 > 3. 各Phaseで成果物を生成
 > ### Phase 5: Artifact Generation
 > 1. 成果物をArtifact Store（Documents/）に格納
-> 2. 実装系タスクの場合はNotion機能で実装（DB作成、Form作成等）
+> 2. 実装系タスクの場合は、設計だけで終わらせず具体的な成果物として実装する（コード変更、設定反映、ファイル生成、必要なら外部システム更新）
 > ### Phase 5.5: Verification（スキップ禁止）
 > 1. intent.yamlの`workflow_depth`を確認
 > 2. **L1チェック（全タスク必須）:** 各成果物の単体チェック（型チェック / 構文 / 論理 / 根拠）
@@ -338,10 +336,10 @@ SKL_plc_04_operation Phase 8 Knowledge Lintを実行してください
 > 2. 該当あり → Next Action ProtocolにBacktrack選択肢(D/E)を統合
 > 3. 該当なし → 通常のNext Action Protocolのみ
 > ### Phase 8: Knowledge Lint（月次 / 手動）
-> 1. `.notion/wiki/index.md`を読み込み
+> 1. `.claude/wiki/index.md` または `.cursor/wiki/index.md` を読み込み
 > 2. wiki配下の全トピックページを走査
 > 3. RUL_plc_system §10のLintチェックリスト5項目を実行
-> 4. `.notion/wiki/lint-report-YYYY-MM.md`にレポート出力
+> 4. `.claude/wiki/lint-report-YYYY-MM.md` または `.cursor/wiki/lint-report-YYYY-MM.md` にレポート出力
 > 5. 🔴重要度があればオーナーに通知
 > 6. `log.md`に`lint`エントリを追加
 > ### Phase 9: \[Platform Builder完了時\] Production Skill自動生成
@@ -361,7 +359,7 @@ SKL_plc_04_operation Phase 8 Knowledge Lintを実行してください
 > ---
 > **🚨 重要ルール**
 > - **スキル定義の指示に忠実に従う**
-> - **実装系タスクは必ずNotion機能で実装**（設計書だけで終わらない）
+> - **実装系タスクは必ず具体的な成果物として実装**（設計書だけで終わらない）
 > - **Context収集は必須**（実行前に追加情報を収集）
 > - **各Mob Checkpointでは必ず人間のアクションを待つ**
 > - **成果物は具体的に記録**（「〇〇ページを作成」「ステータスを更新」等）
@@ -393,10 +391,10 @@ SKL_plc_04_operation Phase 8 Knowledge Lintを実行してください
 > Backlog更新時のページ名は `backlog.yaml`（tasks.yamlではない）
 ---
 ## 参照元
-- [T002_コマンド体系再定義書](https://www.notion.so/6c404df8242549df8199dadb2a187660) — Stage 4定義（本ページのベース）
-- [T003_コア原理再定義書](https://www.notion.so/e81ef93779fd4a5c85d83a93791e3dd5) — Context Cascade / Hierarchical Context Propagation原理
-- [T007_新コマンド体系アーキテクチャ設計書](https://www.notion.so/d39600b2da7142679bc22451089aeeae) — テンプレート構造・命名規則
-- [CMD_aipo_04_deliver](https://www.notion.so/b30b81f5182c421bbfc49840ff436430) — 旧版コマンド（対応元）
+- T002_コマンド体系再定義書 — Stage 4定義（本ページのベース）
+- T003_コア原理再定義書 — Context Cascade / Hierarchical Context Propagation原理
+- T007_新コマンド体系アーキテクチャ設計書 — テンプレート構造・命名規則
+- CMD_aipo_04_deliver — 旧版コマンド（対応元）
 ---
 **作成日:** 2026-04-07
 **ステータス:** Active

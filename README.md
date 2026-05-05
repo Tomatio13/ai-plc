@@ -3,6 +3,12 @@
 PMBOKの知識体系をAIエージェント向けに再設計した**4ステージパイプライン**。  
 Claude Code / Cursor の両環境にインストールでき、既存の設定を壊しません。
 
+## 方針
+
+- **Local-first** — `intent.yaml` / `backlog.yaml` / `context.yaml` / `Documents/` を正本として運用
+- **Notion非依存** — Notion は必須ではなく、外部同期が必要な場合のみ任意で連携
+- **External Syncは任意** — `sync_targets` 未設定時は同期せず、ローカル運用だけで完結
+
 ## パイプライン概要
 
 ```
@@ -119,6 +125,13 @@ ai-plc/
 | **Fractal Decomposition** | Goalの再帰的分解とSub-Agent Scope生成 |
 | **Adaptive Workflow** | Simple / Standard / Complex の3段階深度自動判定 |
 | **Self-Describing Task** | コンテキスト付きタスク委譲構造 |
+
+## 運用原則
+
+- `backlog.yaml` と `Documents/` を中心に進捗と成果物を管理
+- 永続メモリは `.claude/wiki/` または `.cursor/wiki/` の Markdown を使用
+- `sync_targets` は Linear / GitHub Issues / SQLite / CSV などを明示設定したときのみ利用
+- `db-sync` スキルは deprecated で、標準インストール対象外
 
 ## カスタマイズ
 

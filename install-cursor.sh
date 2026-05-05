@@ -64,6 +64,17 @@ safe_copy_dir() {
     cp -r "$src"/* "$dst"/ 2>/dev/null || true
 }
 
+install_skills_without_deprecated() {
+    local src="$1" dst="$2"
+    if [[ "$DRY_RUN" == true ]]; then
+        dry "copy directory $src → $dst (excluding deprecated db-sync)"
+        return
+    fi
+    mkdir -p "$dst"
+    cp -r "$src"/* "$dst"/ 2>/dev/null || true
+    rm -rf "$dst/ai-plc/db-sync"
+}
+
 echo ""
 echo "🚀 AI-PLC Installer for Cursor v${VERSION}"
 echo "   Target: $TARGET_DIR"
@@ -73,7 +84,7 @@ fi
 echo ""
 
 echo "📦 Step 1/3: Installing skills..."
-safe_copy_dir "$SCRIPT_DIR/core/skills" "$TARGET_DIR/.cursor/skills"
+install_skills_without_deprecated "$SCRIPT_DIR/core/skills" "$TARGET_DIR/.cursor/skills"
 info "Skills installed: .cursor/skills/ai-plc/"
 
 echo ""

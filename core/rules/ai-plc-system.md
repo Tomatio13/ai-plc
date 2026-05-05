@@ -15,7 +15,7 @@ AI-PLCパイプラインの全スキルが従う**共通実行ルール**を定�
 >
 > - ガイド/設計書「だけ」では完了にならない
 >
-> - 実装系タスクは必ずNotion機能で実装（Database・Form・ページ作成）
+> - 実装系タスクは必ず具体的な成果物として実装（ファイル生成・コード変更・設定反映・必要なら外部システム更新）
 >
 > - タスク完了前に「成果物は作成されたか？」を確認
 >
@@ -119,12 +119,12 @@ graph TD
 ## 7. 🧠 Persistent Memory ルール
 > 🧠 **セッション横断の記憶機構**
 >
-> `.notion`配下の3ファイルを通じて、プロジェクト横断で知見・アイデンティティ・ユーザーモデルを維持する。
+> ローカルワークスペース配下の記憶ファイルを通じて、プロジェクト横断で知見・アイデンティティ・ユーザーモデルを維持する。
 ### 読み取りルール
 - セッション開始時、Instructionから@mention経由で自動ロード
-- SKL実行時、[memory.md](https://www.notion.so/e96fb8b4f56146b4b5a5a946262d710d)の関連セクションを参照して過去の知見を活用
-- [Notion page](https://www.notion.so/3b7736201a6f4d71b118061d409c804d)の行動原則に常に従う
-- [user.md](https://www.notion.so/ab17cd3d928c4a3696849cebcd922072)のユーザーモデルに基づいて対応を調整
+- SKL実行時、`.claude/memory.md` または `.cursor/memory.md` の関連セクションを参照して過去の知見を活用
+- 行動原則は `.claude/soul.md` または `.cursor/soul.md` を正本として参照する
+- ユーザーモデルは `.claude/user.md` または `.cursor/user.md` に基づいて対応を調整する
 ### [memory.md](http://memory.md)書き込みルール
 **追記条件（**[**以下の場合にmemory.md**](http://以下の場合にmemory.md)**に追記）:**
 1. バグを発見・修正したとき → 「AI-PLC運用知見」に追記
@@ -151,7 +151,7 @@ SKL_plc_04_operation Phase 7では、以下のチェックリストを**必ず�
 - [x] External Sync — [sync_targets確認: 「未定義→スキップ」 or 「push実行: N件」]
 - [x] Wiki波及更新 — [更新内容 or 「新規性なし — スキップ」]
 - [x] log.md — [エントリ追加 or 「Wiki更新なしのためスキップ」]
-- [x] Project Registry DB — [「未完了タスクあり→スキップ」 or 「全完了→completed更新」]
+- [x] Project Registry — [「未完了タスクあり→スキップ」 or 「全完了→completed更新」]
 ```
 ### 各項目の詳細
 - [ ] **backlog.yaml:** タスクstatus → completed + Outputリンク追加
@@ -160,8 +160,8 @@ SKL_plc_04_operation Phase 7では、以下のチェックリストを**必ず�
 - [ ] [**memory.md**](http://memory.md)**:** セッション中に学んだ知見があれば追記（確認必須。なければ「新規知見なし」と出力）
 - [ ] [**user.md**](http://user.md)**:** 新しい好み・パターンがあれば更新（確認必須。なければ「変更なし」と出力）
 - [ ] **External Sync:** intent.yamlの`sync_targets`を**必ず読み込んで確認**。定義があれば同期実行、なければ「未定義→スキップ」と出力
-- [ ] **Wiki波及更新:** 成果物から得た知見を`.notion/wiki/`の関連トピックに追記 + バックリンク追加 + [log.md](http://log.md)更新（§11参照）。新規性なければ「新規性なし」と出力
-- [ ] **Project Registry DB更新:** PJ全タスク完了時のみ、[AI-PLC Projects DB](https://www.notion.so/8f5680ace0254d3e9d82c260b4a1fc73) DBの該当PJのステータスを「completed」に更新
+- [ ] **Wiki波及更新:** 成果物から得た知見を `.claude/wiki/` または `.cursor/wiki/` の関連トピックに追記 + バックリンク追加 + [log.md](http://log.md)更新（§11参照）。新規性なければ「新規性なし」と出力
+- [ ] **Project Registry更新:** PJ全タスク完了時のみ、ローカルの Project Registry（例: `.claude/db/ai_plc.db` の `projects` テーブル）に完了状態を反映
 ### §18 3層検証との連動
 Phase 7（Propagation）の前に、必ず**Phase 5.5: Verification（§18準拠の3層検証）**を実行すること。検証が完了していない成果物についてPropagationを実行してはならない。
 **タイミング:** SKL_plc_04_operationのPhase 5.5（Verification）→ Phase 6（Status Update）→ Phase 7（Propagation）の順で必ず実行。
@@ -176,7 +176,7 @@ Phase 7（Propagation）の前に、必ず**Phase 5.5: Verification（§18準拠
 | **役割** | **説明** | **例** |
 | --- | --- | --- |
 | 📤 **タスク委譲**（Task Delegation） | PJ内で発見したが今実行しないタスクを、コンテキスト付きで外部に書き出す | 開発チケット、デザイン依頼、別PJ波及 |
-| 🔄 **ステータス同期**（Status Sync） | backlog.yamlのステータス変更を外部DBに反映 | Notion DB・Linear・GitHub Issuesの更新 |
+| 🔄 **ステータス同期**（Status Sync） | backlog.yamlのステータス変更を外部システムに反映 | SQLite・Linear・GitHub Issuesの更新 |
 ### タスク委譲が発動するケース
 | **ケース** | **発動タイミング** | **誰向け** | **例** |
 | --- | --- | --- | --- |
@@ -213,7 +213,7 @@ acceptance_criteria:                    # 完了基準
 priority: "high"
 due_date: "2026-04-15"                  # 任意
 ```
-**Notion DBへのマッピング例:**
+**外部タスク管理システムへのマッピング例:**
 - `title` → タスク名（titleプロパティ）
 - `description` + `context` + `related_docs` + `constraints` → ページ本文にコールアウトで配置
 - `acceptance_criteria` → ページ本文にチェックリストで配置
@@ -223,7 +223,7 @@ due_date: "2026-04-15"                  # 任意
 ```yaml
 # intent.yaml 内の sync_targets 定義
 sync_targets:
-  - type: notion_db          # 同期先タイプ
+  - type: sqlite             # 同期先タイプ
     target_url: "db-url" # 同期先URL/ID
     mapping:                 # backlog → 外部プロパティ対応
       title: "Name"          # タスク名
@@ -238,11 +238,12 @@ sync_targets:
     sync_direction: push     # push / pull / bidirectional
 ```
 ### 対応する同期先タイプ
-| **type** | **同期先** | **Notion AI** | **Claude Code** | **Cursor** |
+| **type** | **同期先** | **Claude Code** | **Cursor** | **備考** |
 | --- | --- | --- | --- | --- |
-| `notion_db` | Notion Database | ✅ queryDataSource + updatePage | ❌ API不可 | ❌ API不可 |
-| `linear` | Linear Issues | ⚠️ MCP経由 | ✅ Linear MCP / API | ✅ Linear MCP |
-| `github_issues` | GitHub Issues | ⚠️ MCP経由 | ✅ `gh` CLI | ✅ `gh` CLI |
+| `sqlite` | ローカルSQLite | ✅ ローカル更新 | ✅ ローカル更新 | 既定候補 |
+| `linear` | Linear Issues | ✅ MCP / API | ✅ MCP | 任意 |
+| `github_issues` | GitHub Issues | ✅ `gh` CLI | ✅ `gh` CLI | 任意 |
+| `csv` | CSV/TSV台帳 | ✅ ファイル更新 | ✅ ファイル更新 | 軽量運用向け |
 ### External Sync 実行手順
 1. **intent.yamlのsync_targetsを読み込む**
 2. **sync_targets が空 → スキップ**（ログ出力のみ）
@@ -257,30 +258,17 @@ sync_targets:
 4. **auto_create=true の場合:** backlogに新タスクが追加されたとき外部にもアイテム作成
 5. **同期結果をログ出力:**「✅ External Sync: \[type\] \[target\] — \[タスクID\] を \[ステータス\] に更新」
 ### デフォルトsync_target
-`sync_targets`が未設定（空配列）の場合、`.notion`配下のデフォルトTask DBを自動適用する:
+`sync_targets` が未設定（空配列）の場合、**同期なしを既定**とする。自動で外部同期先を追加してはならない:
 ```yaml
-# デフォルトsync_target（sync_targetsが空のとき自動適用）
-sync_targets:
-  - type: notion_db
-    target_url: "https://www.notion.so/a4df4cf09a5841a4817a284f76b8d9f0"  # .notion/AI-PLC Tasks
-    mapping:
-      title: "タスク名"
-      status: "ステータス"
-      output: "成果物"
-    status_map:
-      pending: "未着手"
-      in_progress: "進行中"
-      completed: "完了"
-    auto_create: true
-    sync_direction: push
+sync_targets: []
 ```
-**デフォルトDB:** [AI-PLC Tasks DB](https://www.notion.so/a4df4cf09a5841a4817a284f76b8d9f0)（`.notion`配下）
-### 参考実装: 外部Backlog DBとの連携
-外部のタスク管理DBとの連携パターン:
+**既定動作:** ローカルの `backlog.yaml` を正本とし、外部同期はユーザーまたはプロジェクト設定で明示された場合のみ実行する。
+### 参考実装: ローカルDB/外部Backlogとの連携
+外部のタスク管理システムとの連携パターン:
 ```yaml
 sync_targets:
-  - type: notion_db
-    target_url: "[YOUR_BACKLOG_DB_URL]"
+  - type: sqlite
+    target_url: ".claude/db/ai_plc.db"
     mapping:
       title: "タスク名"
       status: "ステータス"
@@ -297,11 +285,11 @@ sync_targets:
 ## 10. 🧹 Knowledge Lint ルール
 > 🧹 **Karpathy Second BrainのLintワークフロー。**
 >
-> `.notion/wiki/`配下の知識ベースの健全性を月次で検証する。
+> `.claude/wiki/` または `.cursor/wiki/` 配下の知識ベースの健全性を月次で検証する。
 >
 > **実行タイミング:** SKL_plc_04_operation Phase 8 として実行。月次推奨。
 >
-> **環境別実現:** Notion→カスタムエージェント定期実行 / CC→cron
+> **環境別実現:** CC→cron / Cursor→Task Runner or cron
 ### Lintチェックリスト（5項目）
 - [ ] 🔴 **矛盾検出** — `> ⚠️ CONTRADICTION:` フラグがあるページを特定し、既存知見との不整合を検証
 - [ ] 🟡 **孤立ページ検出** — 他のトピックからのバックリンクがないページを特定
@@ -309,7 +297,7 @@ sync_targets:
 - [ ] 🔵 **未説明概念** — 他ページで言及されているが専用トピックがない概念を特定
 - [ ] 🔵 **欠落相互参照** — 関連すべきトピック間のリンクが欠落しているペアを検出
 ### Lintレポート出力形式
-レポートは `.notion/wiki/lint-report-YYYY-MM.md` として作成。以下のフォーマットに従う:
+レポートは `.claude/wiki/lint-report-YYYY-MM.md` または `.cursor/wiki/lint-report-YYYY-MM.md` として作成。以下のフォーマットに従う:
 ```markdown
 # Knowledge Lint Report - YYYY-MM
 
@@ -474,7 +462,7 @@ last_updated: YYYY-MM-DD
 **原則:** 内部情報（Flow, Stock, チームスペース）を最優先。外部（Slack, GitHub, Web）は不足がある場合のみ。
 ---
 ## 17. ⚠️ 実行エラー回避原則
-> ⚠️ **NotionのDB操作・大量処理で失敗しやすい状況を避けるための原則。**
+> ⚠️ **外部システム同期や大量処理で失敗しやすい状況を避けるための原則。**
 1. **一括処理をしない** — 取得も更新も5〜10件の小分けで進める
 2. **範囲を絞ってから取得** — LIMIT必須、プレフィクスや日付で対象を絞る
 3. **不安定なら既知URLベースに切り替え** — 一覧取得が落ちる場合は既知URL起点

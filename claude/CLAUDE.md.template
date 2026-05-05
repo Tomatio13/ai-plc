@@ -3,6 +3,12 @@
 
 This project uses AI-PLC (AI Product Lifecycle) as the primary workflow system.
 
+### Operating Principles
+
+- Local-first: `intent.yaml`, `backlog.yaml`, `context.yaml`, and `Documents/` are the source of truth.
+- External sync is optional: only use it when `sync_targets` is explicitly configured.
+- Persistent knowledge lives in `.claude/wiki/` and related local markdown files.
+
 ### 4-Stage Pipeline
 
 | Stage | Command | Skill | Purpose |
@@ -17,6 +23,7 @@ This project uses AI-PLC (AI Product Lifecycle) as the primary workflow system.
 - `intent.yaml` — Execution Context（旧layer.yaml）
 - `backlog.yaml` — タスク定義（旧tasks.yaml）
 - `context.yaml` — Context Manifest
+- `.claude/wiki/` — Persistent knowledge wiki
 - `.claude/rules/ai-plc-*.md` — ルール群
 - `.claude/skills/ai-plc/` — スキル群
 

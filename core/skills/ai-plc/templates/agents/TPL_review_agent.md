@@ -143,7 +143,7 @@
 
 | 環境 | レビュー | テスト指示書 | 成果物 |
 | --- | --- | --- | --- |
-| Notion | PJ配下にレビューコメントページ | テスト指示書ページを生成 | Documents配下 |
+| Generic Markdown | PJ配下にレビューコメントファイル | テスト指示書ファイルを生成 | Documents配下 |
 | Claude Code | aidlc-docs/construction/build-and-test/ に指示書 | CLIでテスト実行確認 | テスト結果ログ |
 | Cursor | Agent Modeでレビュー | テスト指示をインラインコメント | テスト結果レポート |
 

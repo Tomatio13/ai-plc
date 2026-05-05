@@ -142,7 +142,7 @@ Goalの複雑度を自動分析し、パイプライン全体のワークフロ�
 > # 外部システムとの同期対象を定義。Post-Deliver Propagation時に自動参照。
 > sync_targets: []            # 空=同期なし
 > # sync_targets:
-> #   - type: notion_db          # notion_db | linear | github_issues
+> #   - type: sqlite             # sqlite | linear | github_issues | csv
 > #     target_url: "db-url" # 同期先のURL/ID
 > #     mapping:                 # backlog.yamlフィールド → 外部プロパティ
 > #       title: "Name"          # タスク名 → DBプロパティ名
@@ -233,15 +233,15 @@ Goalの複雑度を自動分析し、パイプライン全体のワークフロ�
 ### Phase 4.5: Wiki波及更新（Karpathy Ingest原則）
 > 🌊 **「1ソースが10-15 wikiページにタッチ」原則**（Karpathy Second Brain）
 >
-> Context収集で新しい知見を得たら、`.notion/wiki/`配下の関連トピックページに波及更新する。
+> Context収集で新しい知見を得たら、`.claude/wiki/` または `.cursor/wiki/` 配下の関連トピックページに波及更新する。
 >
 > 詳細: [RUL_plc_system](../../../rules/ai-plc-system.md) §11
 **実行フロー:**
-1. [index.md](https://www.notion.so/f3e4522534ae439e8fdf798c47de0358) を読み込み、収集したコンテキストに関連するトピックを特定
+1. `wiki/index.md` を読み込み、収集したコンテキストに関連するトピックを特定
 2. 各関連トピックページに新知見を追記（`- [YYYY-MM-DD] [Source: 収集元] [内容]`）
 3. 新規トピックが必要なら作成し、[index.md](http://index.md)に追加
 4. 関連トピック間の相互リンク（バックリンク）を追加
-5. [log.md](https://www.notion.so/39918cbba9624a9c9488458786956bf0) に`ingest`エントリを追加
+5. `wiki/log.md` に`ingest`エントリを追加
 **スキップ条件:** 収集した情報が既存wiki知見の範囲内で新規性がない場合
 ---
 ### Phase 5: Context Manifest生成
@@ -267,11 +267,11 @@ Context Storeのインデックス + 親Context参照 + 継承ルールを記録
 >
 > - name: "技術スタック"
 > url: "@Context/03_技術スタック.md"
-> summary: "Notion, Palma, TypeScript, React"
+> summary: "Palma, TypeScript, React"
 >
 > - name: "制約条件・ポリシー"
 > url: "@Context/04_制約条件・ポリシー.md"
-> summary: "既存Notion活用、新規ツール最小限"
+> summary: "既存ツール活用、新規ツール最小限"
 >
 > - name: "既存資料まとめ"
 > url: "@Context/05_既存資料まとめ.md"
@@ -465,7 +465,7 @@ Intent + Context Manifest + Context Store を **Stage 2: SKL_plc_02_inception** 
 > - workflow_depthを反映
 > - ステータス: active
 > ### Phase 3.5: Project Registry SQLite 自動登録
-> 1. [AI-PLC Projects DB](https://www.notion.so/8f5680ace0254d3e9d82c260b4a1fc73) DBのデータソースに新規ページを作成
+> 1. `.claude/db/ai_plc.db` の `projects` テーブル、または同等のローカル Project Registry に新規レコードを作成
 > 2. プロパティ設定: PJ名=scope_name / Scope ID=scope_id / ステータス=active / トップページ=ScopeトップURL / システム=AI-PLC / モード=mode / 深度=workflow_depth / Owner=owner / 親Scope=parent_scope / Goal=goal.description / 開始日=今日 / 期限=deadline
 > 3. 登録完了を通知: 「📊 Project Registry SQLite（projects table）に登録しました」
 > 4. **スキップ:** scope_reinit時（既に登録済み）
@@ -475,7 +475,7 @@ Intent + Context Manifest + Context Store を **Stage 2: SKL_plc_02_inception** 
 > 3. \[Sub-Agent Scope\] 親Context Storeを読み込み、Hierarchical Context Cascadeルールで継承
 > 4. Context Storeにカテゴリ別ドキュメントとして格納
 > ### Phase 4.5: Wiki波及更新
-> 1. `.notion/wiki/index.md`を読み込み
+> 1. `.claude/wiki/index.md` または `.cursor/wiki/index.md` を読み込み
 > 2. 収集コンテキストに関連するトピックを特定
 > 3. 各関連トピックに新知見を追記 + バックリンク追加
 > 4. 必要なら新規トピック作成 + [index.md](http://index.md)更新
@@ -496,9 +496,9 @@ Intent + Context Manifest + Context Store を **Stage 2: SKL_plc_02_inception** 
 > **このPhaseは必ず実行すること。sync_targets検出 → ログ出力まで省略してはならない。**
 >
 	1. ワークスペース内のタスク管理DBを検索（「タスク」「バックログ」「Backlog」「Todo」「Project」等）
-	2. 関連するDBが見つかった場合 → 「📊 このDBをsync_targetに設定しますか？」と提案
-	3. 見つからなかった場合 → デフォルトの`.claude/db/ai_plc.db` の `tasks` テーブルを**自動設定**する
-	4. ユーザーが「同期不要」と答えた場合のみ `sync_targets: []` のまま
+	2. 関連する同期先が見つかった場合 → 「📊 この同期先をsync_targetに設定しますか？」と提案
+	3. 見つからなかった場合 → `sync_targets: []` のまま維持する
+	4. ユーザーが「同期不要」と答えた場合 → `sync_targets: []` のまま維持する
 	5. **検出結果をログ出力する（必須）:**
 	**出力形式（必須）:**
 	```javascript
@@ -507,7 +507,7 @@ Intent + Context Manifest + Context Store を **Stage 2: SKL_plc_02_inception** 
 - 設定: sync_targets → [設定内容]
 - intent.yaml更新: [更新済み or スキップ理由]
 	```
-	**❗ デフォルト動作:** sync_targetsが空のままにしない。必ず探索 → 結果出力 → 自動設定 の3ステップを踏むこと。
+	**❗ デフォルト動作:** sync_targetsは空でもよい。必ず探索 → 結果出力 までは行い、自動設定はしないこと。
 	### Phase 7: Mob Checkpoint
 	1. 作成した構造を確認表示
 	2. workflow_depth判定結果を報告
