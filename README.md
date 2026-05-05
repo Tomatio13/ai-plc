@@ -1,7 +1,7 @@
 # AI-PLC — AI Product Lifecycle Pipeline
 
 PMBOKの知識体系をAIエージェント向けに再設計した**4ステージパイプライン**。  
-Claude Code / Cursor の両環境にインストールでき、既存の設定を壊しません。
+Claude Code / Cursor / Codex の各環境にインストールでき、既存の設定を壊しません。
 
 ## 方針
 
@@ -41,10 +41,18 @@ cd ai-plc
 ./install-cursor.sh --target /path/to/your/project
 ```
 
-### 両方同時
+### Codex
 
 ```bash
-./install.sh --target /path/to/your/project both
+git clone https://github.com/YOUR_USER/ai-plc.git
+cd ai-plc
+./install-codex.sh --target /path/to/your/project
+```
+
+### まとめてインストール
+
+```bash
+./install.sh --target /path/to/your/project all
 ```
 
 ### dry-run（確認のみ）
@@ -76,6 +84,21 @@ cd ai-plc
 |--------|------|
 | `.cursor/skills/ai-plc/` | 4ステージスキル + テンプレート群 |
 | `.cursor/rules/ai-plc-*.mdc` | MDCフォーマットのルール（alwaysApply） |
+| `.cursor/soul.md` | AI行動原則テンプレート（新規のみ） |
+| `.cursor/user.md` | ユーザーモデルテンプレート（新規のみ） |
+| `.cursor/memory.md` | メモリポインタ（新規のみ） |
+| `.cursor/wiki/` | Knowledge Wiki初期構造（新規のみ） |
+
+### Codex
+
+| 配置先 | 内容 |
+|--------|------|
+| `.codex/skills/ai-plc/` | 4ステージスキル + テンプレート群 |
+| `AGENTS.md` | AI-PLCセクションをマージ（既存保持） |
+| `.codex/soul.md` | AI行動原則テンプレート（新規のみ） |
+| `.codex/user.md` | ユーザーモデルテンプレート（新規のみ） |
+| `.codex/memory.md` | メモリポインタ（新規のみ） |
+| `.codex/wiki/` | Knowledge Wiki初期構造（新規のみ） |
 
 ## 安全性
 
@@ -92,6 +115,7 @@ ai-plc/
 ├── install.sh               # ユニバーサルインストーラ
 ├── install-cc.sh             # Claude Code用
 ├── install-cursor.sh         # Cursor用
+├── install-codex.sh          # Codex用
 ├── uninstall.sh              # アンインストーラ
 ├── .ai-plc-version           # バージョン情報
 ├── LICENSE                   # MIT License
@@ -108,6 +132,9 @@ ai-plc/
 │
 ├── cursor/                   # Cursor固有
 │   └── rules/                # .mdcフォーマットルール
+│
+├── codex/                    # CodexはAGENTS.mdと.codex/を使用
+│   └── (shared via template)
 │
 ├── templates/                # ジェネリックテンプレート
 │   ├── soul.md, user.md, memory.md
@@ -129,7 +156,7 @@ ai-plc/
 ## 運用原則
 
 - `backlog.yaml` と `Documents/` を中心に進捗と成果物を管理
-- 永続メモリは `.claude/wiki/` または `.cursor/wiki/` の Markdown を使用
+- 永続メモリは `.claude/wiki/` / `.cursor/wiki/` / `.codex/wiki/` の Markdown を使用
 - `sync_targets` は Linear / GitHub Issues / SQLite / CSV などを明示設定したときのみ利用
 - `db-sync` スキルは deprecated で、標準インストール対象外
 
@@ -141,13 +168,25 @@ ai-plc/
 2. **`.claude/user.md`** — あなたのプロフィール・好み
 3. **`CLAUDE.md`** — プロジェクト固有の設定を追記
 
+Codex を使う場合:
+
+1. **`.codex/soul.md`** — AIの行動原則・アイデンティティ
+2. **`.codex/user.md`** — あなたのプロフィール・好み
+3. **`AGENTS.md`** — プロジェクト固有の設定を追記
+
+Cursor を使う場合:
+
+1. **`.cursor/soul.md`** — AIの行動原則・アイデンティティ
+2. **`.cursor/user.md`** — あなたのプロフィール・好み
+3. **`.cursor/wiki/`** — 永続知識の蓄積先
+
 ## アンインストール
 
 ```bash
 ./uninstall.sh --target /path/to/your/project
 ```
 
-`soul.md`, `user.md`, `memory.md`, `wiki/` はカスタマイズ済みの可能性があるため削除されません。
+`.claude/*` / `.cursor/*` / `.codex/*` 配下の `soul.md`, `user.md`, `memory.md`, `wiki/` はカスタマイズ済みの可能性があるため削除されません。
 
 ## License
 

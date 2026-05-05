@@ -3,7 +3,7 @@
 ## 概要
 
 AI-PLC (AI Product Lifecycle) は、PMBOKのプロジェクト管理知識体系を
-AIエージェント環境（Claude Code / Cursor）向けに再設計したパイプラインシステム。
+AIエージェント環境（Claude Code / Cursor / Codex）向けに再設計したパイプラインシステム。
 
 ## 設計方針
 

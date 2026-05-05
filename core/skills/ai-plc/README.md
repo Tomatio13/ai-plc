@@ -1,7 +1,7 @@
 # AI-PLC (AI Product Lifecycle) System
 
 AI-PLCは、PMBOKの知識体系をAIエージェント向けに再設計した4ステージパイプライン。
-Claude Code / Cursor 環境で動作するスキル群として提供される。
+Claude Code / Cursor / Codex 環境で動作するスキル群として提供される。
 
 ## 基本方針
 
@@ -34,7 +34,7 @@ Claude Code / Cursor 環境で動作するスキル群として提供される�
 - `templates/roles/` — ロールテンプレート（PM / architect / developer / content / tech_lead / generic）
 - `templates/agents/` — エージェントテンプレート（research / implementation / coding / review / content / operation / task_patterns）
 
-### Knowledge Wiki（`.claude/wiki/`）
+### Knowledge Wiki（`.claude/wiki/` / `.cursor/wiki/` / `.codex/wiki/`）
 - `index.md` — 全トピック索引
 - トピックページ群（運用知見・判断パターン・PJ横断の学び）
 

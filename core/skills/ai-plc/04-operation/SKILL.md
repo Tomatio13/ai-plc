@@ -183,7 +183,7 @@ L1/L2/L3検証の結果を受けて、以下のBacktrack Trigger条件を判定:
 5. ✅ **External Sync** — intent.yamlの`sync_targets`を**必ず読み込んで確認**。結果をログ出力:
 	- sync_targets未定義 → `「sync_targets未定義 → スキップ」`と出力
 	- sync_targets定義あり → 同期実行し結果を出力
-6. ✅ **Wiki波及更新** — 成果物から得た知見を `.claude/wiki/` または `.cursor/wiki/` の関連トピックに追記。新規性がなければ「新規性なし」と明示
+6. ✅ **Wiki波及更新** — 成果物から得た知見を `.claude/wiki/` / `.cursor/wiki/` / `.codex/wiki/` の関連トピックに追記。新規性がなければ「新規性なし」と明示
 7. ✅ [**log.md**](http://log.md)**更新** — [Wiki更新があればlog.md](http://Wiki更新があればlog.md)にエントリ追加
 **スキップ禁止ルール:** 各項目は「実行した結果スキップが妥当」と判断することは許容するが、「確認せずにスキップ」は禁止。必ず確認→判断→結果出力の3ステップを踏むこと。
 ### Phase 8: Knowledge Lint（月次ヘルスチェック）
@@ -195,7 +195,7 @@ L1/L2/L3検証の結果を受けて、以下のBacktrack Trigger条件を判定:
 **実行フロー:**
 1. `wiki/index.md` を読み込み、wiki配下の全トピックページを走査
 2. **5項目のLintチェックリスト**を実行（[RUL_plc_system](../../../rules/ai-plc-system.md) §10参照）
-3. Lintレポートを `.claude/wiki/lint-report-YYYY-MM.md` または `.cursor/wiki/lint-report-YYYY-MM.md` として作成
+3. Lintレポートを `.claude/wiki/lint-report-YYYY-MM.md` / `.cursor/wiki/lint-report-YYYY-MM.md` / `.codex/wiki/lint-report-YYYY-MM.md` として作成
 4. 🔴重要度の問題があればオーナーに通知
 5. `wiki/log.md` に`lint`エントリを追加
 **手動実行:**
@@ -336,10 +336,10 @@ SKL_plc_04_operation Phase 8 Knowledge Lintを実行してください
 > 2. 該当あり → Next Action ProtocolにBacktrack選択肢(D/E)を統合
 > 3. 該当なし → 通常のNext Action Protocolのみ
 > ### Phase 8: Knowledge Lint（月次 / 手動）
-> 1. `.claude/wiki/index.md` または `.cursor/wiki/index.md` を読み込み
+> 1. `.claude/wiki/index.md` / `.cursor/wiki/index.md` / `.codex/wiki/index.md` を読み込み
 > 2. wiki配下の全トピックページを走査
 > 3. RUL_plc_system §10のLintチェックリスト5項目を実行
-> 4. `.claude/wiki/lint-report-YYYY-MM.md` または `.cursor/wiki/lint-report-YYYY-MM.md` にレポート出力
+> 4. `.claude/wiki/lint-report-YYYY-MM.md` / `.cursor/wiki/lint-report-YYYY-MM.md` / `.codex/wiki/lint-report-YYYY-MM.md` にレポート出力
 > 5. 🔴重要度があればオーナーに通知
 > 6. `log.md`に`lint`エントリを追加
 > ### Phase 9: \[Platform Builder完了時\] Production Skill自動生成
