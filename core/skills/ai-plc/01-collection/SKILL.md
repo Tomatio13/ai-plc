@@ -208,13 +208,13 @@ Goalの複雑度を自動分析し、パイプライン全体のワークフロ�
 > ```
 > これにより、階層が深くなってもコンテキスト情報が薄まらない。
 ### Phase 3.5: Project Registry SQLite 自動登録
-> 📊 **新規Scope作成時、`.claude/db/ai_plc.db` の `projects` テーブルに自動登録する。**
+> 📊 **新規Scope作成時、`{{agent_home}}/db/ai_plc.db` の `projects` テーブルに自動登録する。**
 >
 > Intent生成（Phase 3）完了後、Scope ID / Goal / Mode / Owner / Deadline / トップページURL / 深度 / システム / 親Scope を
 >
-> `.claude/db/ai_plc.db` の `projects` テーブルにレコードとして登録する。
+> `{{agent_home}}/db/ai_plc.db` の `projects` テーブルにレコードとして登録する。
 **実行フロー:**
-1. `.claude/db/ai_plc.db` の `projects` テーブルに新規レコードを作成
+1. `{{agent_home}}/db/ai_plc.db` の `projects` テーブルに新規レコードを作成
 2. 以下のプロパティを設定:
 	- PJ名: scope_name
 	- Scope ID: scope_id
@@ -233,7 +233,7 @@ Goalの複雑度を自動分析し、パイプライン全体のワークフロ�
 ### Phase 4.5: Wiki波及更新（Karpathy Ingest原則）
 > 🌊 **「1ソースが10-15 wikiページにタッチ」原則**（Karpathy Second Brain）
 >
-> Context収集で新しい知見を得たら、`.claude/wiki/` / `.cursor/wiki/` / `.codex/wiki/` 配下の関連トピックページに波及更新する。
+> Context収集で新しい知見を得たら、`{{agent_home}}/wiki/` 配下の関連トピックページに波及更新する。
 >
 > 詳細: [RUL_plc_system](../../../rules/ai-plc-system.md) §11
 **実行フロー:**
@@ -319,7 +319,7 @@ Context Storeのインデックス + 親Context参照 + 継承ルールを記録
 > 🚨 **Intent生成後に必ず実行。sync_targets検出・ログ出力まで省略してはならない。**
 1. **ワークスペース内のタスク管理DBを検索** — 「タスク」「バックログ」「Backlog」「Todo」「Project」等のキーワードで検索
 2. **関連するDBが見つかった場合** → 「📊 このDBをsync_targetに設定しますか？」と提案
-3. **見つからない場合** → デフォルトの`.claude/db/ai_plc.db` の `tasks` テーブルを自動設定
+3. **見つからない場合** → デフォルトの `{{agent_home}}/db/ai_plc.db` の `tasks` テーブルを自動設定
 4. **ユーザーが「同期不要」と答えた場合のみ** → `sync_targets: []`
 5. **検出結果をログ出力**（`📊 Phase 6.5: External Sync設定 — 検索結果: ... / 設定: ...`）
 ### Phase 7: Mob Checkpoint — 完了確認と次ステージ提案
@@ -465,7 +465,7 @@ Intent + Context Manifest + Context Store を **Stage 2: SKL_plc_02_inception** 
 > - workflow_depthを反映
 > - ステータス: active
 > ### Phase 3.5: Project Registry SQLite 自動登録
-> 1. `.claude/db/ai_plc.db` の `projects` テーブル、または同等のローカル Project Registry に新規レコードを作成
+> 1. `{{agent_home}}/db/ai_plc.db` の `projects` テーブル、または同等のローカル Project Registry に新規レコードを作成
 > 2. プロパティ設定: PJ名=scope_name / Scope ID=scope_id / ステータス=active / トップページ=ScopeトップURL / システム=AI-PLC / モード=mode / 深度=workflow_depth / Owner=owner / 親Scope=parent_scope / Goal=goal.description / 開始日=今日 / 期限=deadline
 > 3. 登録完了を通知: 「📊 Project Registry SQLite（projects table）に登録しました」
 > 4. **スキップ:** scope_reinit時（既に登録済み）
@@ -475,7 +475,7 @@ Intent + Context Manifest + Context Store を **Stage 2: SKL_plc_02_inception** 
 > 3. \[Sub-Agent Scope\] 親Context Storeを読み込み、Hierarchical Context Cascadeルールで継承
 > 4. Context Storeにカテゴリ別ドキュメントとして格納
 > ### Phase 4.5: Wiki波及更新
-> 1. `.claude/wiki/index.md` / `.cursor/wiki/index.md` / `.codex/wiki/index.md` を読み込み
+> 1. `{{agent_home}}/wiki/index.md` を読み込み
 > 2. 収集コンテキストに関連するトピックを特定
 > 3. 各関連トピックに新知見を追記 + バックリンク追加
 > 4. 必要なら新規トピック作成 + [index.md](http://index.md)更新
