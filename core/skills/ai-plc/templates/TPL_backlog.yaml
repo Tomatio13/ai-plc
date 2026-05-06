@@ -1,0 +1,26 @@
+# Backlog metadata
+scope_id: "L-MMDD"
+last_updated: "[YYYY-MM-DD]"
+
+# Executable tasks
+tasks: []
+# tasks:
+#   - task_id: "T-001"
+#     title: "Define scope structure"
+#     type: "implementation"
+#     status: "pending"
+#     priority: "medium"
+#     depends_on: []
+#     description: "What to do"
+#     context: []
+#     related_docs: []
+#     constraints: []
+#     acceptance_criteria: []
+#     outputs: []
+#     assignee: "[Owner]"
+
+# Optional sub-layer work managed outside the current task list
+sublayers: []
+
+# Backtrack and re-planning history
+refactoring_log: []

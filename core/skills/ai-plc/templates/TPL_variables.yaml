@@ -1,0 +1,12 @@
+# Platform builder variables metadata
+scope_id: "L-MMDD"
+mode: platform_builder
+
+# Reusable generation variables
+variables: {}
+
+# Named output targets for generated assets
+outputs: {}
+
+# Generation and release policies
+policies: {}

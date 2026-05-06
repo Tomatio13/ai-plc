@@ -19,6 +19,7 @@ Stage 2. Goal を Task と Sub-Layer に分解し、実行可能な backlog を�
 - `core/rules/ai-plc-session.md`
 - `core/rules/ai-plc-adaptive.md`
 - `core/skills/ai-plc/templates/`
+- `core/skills/ai-plc/templates/TPL_backlog.yaml`
 
 ## Inputs
 
@@ -47,7 +48,7 @@ Stage 2. Goal を Task と Sub-Layer に分解し、実行可能な backlog を�
    - Sub-Layer
    - Task
 5. Mob Checkpoint で分解案の承認を取る
-6. `backlog.yaml` を生成する
+6. `core/skills/ai-plc/templates/TPL_backlog.yaml` をベースに `backlog.yaml` を生成する
 7. 必要なら `sublayers/` を初期化する
 8. 外部委譲候補があれば External Sync 候補として示す
 9. Mob Checkpoint で次 Stage を提案する
@@ -57,6 +58,7 @@ Stage 2. Goal を Task と Sub-Layer に分解し、実行可能な backlog を�
 - Task は 1 から 2 日で完結する粒度を目安にする
 - Sub-Layer は独自 Context が必要な場合だけ作る
 - backlog の各 task には type、status、依存関係、優先度を持たせる
+- `backlog.yaml` の初期構造は `core/skills/ai-plc/templates/TPL_backlog.yaml` を正本として使う
 - `workflow_depth=standard` 以上では Stage 3 を前提に構造化する
 - External Sync は承認前に自動実行しない
 
