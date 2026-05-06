@@ -1,0 +1,20 @@
+# Context manifest metadata
+scope_id: "L-MMDD"
+last_updated: "[YYYY-MM-DD]"
+
+# Parent context references for Context Cascade
+parent_contexts: []
+
+# Context document index
+documents: []
+# documents:
+#   - id: "ctx-01"
+#     name: "Project overview"
+#     path: "Context/01_project_overview.md"
+#     summary: "Short summary"
+#     tags: []
+#     inheritance: "global_immutable"
+
+# Optional shared assumptions and constraints
+assumptions: []
+constraints: []

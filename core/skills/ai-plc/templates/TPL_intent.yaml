@@ -1,0 +1,27 @@
+# Execution Context metadata
+scope_id: "L-MMDD"
+scope_name: "[Scope名]"
+status: active
+workflow_depth: standard
+
+# Goal definition
+goal:
+  description: "[Goal]"
+  success_criteria: []
+
+# Execution mode
+mode: direct
+
+# Ownership and deadline
+owner: "[Owner]"
+deadline: "[YYYY-MM-DD]"
+
+# Hierarchy
+parent_scope: null
+sub_agent_scopes: []
+
+# Optional external sync
+sync_targets: []
+
+# Optional extensions
+extensions: []
