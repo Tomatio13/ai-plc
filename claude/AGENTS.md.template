@@ -19,16 +19,12 @@
 | Construction | `{{agent_home}}/skills/ai-plc/03-construction/SKILL.md` |
 | Operation | `{{agent_home}}/skills/ai-plc/04-operation/SKILL.md` |
 
-### Agents
+### Working Directory
 
-Use these names as task roles regardless of tool. In Claude Code they map to `.claude/agents/*.md`; in Codex they are role conventions referenced from `AGENTS.md`.
+Create new work in `Flow/[current-year][current-month]/[current-date]/`.
+ex: `Flow/2026/05/07`
 
-| Agent | File | Trigger |
-|-------|------|---------|
-| `researcher` | `.claude/agents/researcher.md` | 「調査して」「リサーチして」 |
-| `quality-reviewer` | `.claude/agents/quality-reviewer.md` | 「レビューして」「チェックして」 |
-| `pm-analyst` | `.claude/agents/pm-analyst.md` | 「進捗を分析して」「リスクを評価して」 |
-| `progress-syncer` | `.claude/agents/progress-syncer.md` | 「進捗を同期して」 |
+Use sequential shell commands — never `$(subshell)`.
 
 ### Definition of Done
 
@@ -38,11 +34,14 @@ Use these names as task roles regardless of tool. In Claude Code they map to `.c
 4. Post-Deliver Propagation completed (context.yaml, memory.md, wiki/)
 5. External sync is skipped unless explicitly configured
 
-### Key Naming (AI-PLC)
+### Key Files
 
-| Correct | Legacy (do not use) |
-|---------|-------------------|
-| `intent.yaml` | ~~layer.yaml~~ |
-| `backlog.yaml` | ~~tasks.yaml~~ |
-| Agents/ | ~~Commands/~~ |
+- `intent.yaml` — Execution Context（旧layer.yaml）
+- `backlog.yaml` — タスク定義（旧tasks.yaml）
+- `context.yaml` — Context Manifest
+- `{{agent_home}}/wiki/` — Persistent knowledge wiki
+- `{{agent_home}}/rules/ai-plc-*.md` — ルール群
+- `{{agent_home}}/skills/ai-plc/` — スキル群
+
+
 <!-- AI-PLC END -->

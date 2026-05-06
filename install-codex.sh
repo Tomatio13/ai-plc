@@ -113,16 +113,24 @@ if [[ "$DRY_RUN" == true ]]; then
 fi
 echo ""
 
-echo "📦 Step 1/4: Installing skills..."
+echo "📦 Step 1/5: Installing skills..."
 install_skills_without_deprecated "$SCRIPT_DIR/core/skills" "$TARGET_DIR/.codex/skills"
 info "Skills installed: .codex/skills/ai-plc/"
 
 echo ""
-echo "📝 Step 2/4: Merging AGENTS.md..."
+echo "📏 Step 2/5: Installing rules..."
+for rule in "$SCRIPT_DIR"/core/rules/ai-plc-*.md; do
+    fname="$(basename "$rule")"
+    safe_copy_if_missing "$rule" "$TARGET_DIR/.codex/rules/$fname"
+done
+info "Rules installed: .codex/rules/ai-plc-*.md"
+
+echo ""
+echo "📝 Step 3/5: Merging AGENTS.md..."
 merge_with_markers "$SCRIPT_DIR/claude/AGENTS.md.template" "$TARGET_DIR/AGENTS.md"
 
 echo ""
-echo "🧠 Step 3/4: Installing templates (skip if exists)..."
+echo "🧠 Step 4/5: Installing templates (skip if exists)..."
 safe_copy_if_missing "$SCRIPT_DIR/templates/soul.md" "$TARGET_DIR/.codex/soul.md"
 safe_copy_if_missing "$SCRIPT_DIR/templates/user.md" "$TARGET_DIR/.codex/user.md"
 safe_copy_if_missing "$SCRIPT_DIR/templates/memory.md" "$TARGET_DIR/.codex/memory.md"
@@ -135,7 +143,7 @@ safe_copy_if_missing "$SCRIPT_DIR/templates/wiki/index.md" "$TARGET_DIR/.codex/w
 safe_copy_if_missing "$SCRIPT_DIR/templates/wiki/log.md" "$TARGET_DIR/.codex/wiki/log.md"
 
 echo ""
-echo "📌 Step 4/4: Version marker..."
+echo "📌 Step 5/5: Version marker..."
 if [[ "$DRY_RUN" != true ]]; then
     cp "$SCRIPT_DIR/.ai-plc-version" "$TARGET_DIR/.ai-plc-version"
 fi
