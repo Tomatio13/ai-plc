@@ -1,3 +1,13 @@
+---
+name: db-sync
+description: Synchronize AI-PLC local task or project state with an external system when a project-specific sync engine is available. Use only when explicit sync_targets exist and the user asks to push, pull, inspect, or reconcile external task data.
+compatibility: Requires a project-specific sync implementation and local database files. Network access may be required depending on the sync target.
+metadata:
+  system: "ai-plc"
+  kind: "skill"
+  status: "deprecated"
+---
+
 # AI-PLC External Sync
 
 > ⚠️ **Deprecated**

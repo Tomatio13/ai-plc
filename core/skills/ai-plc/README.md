@@ -1,55 +1,45 @@
-# AI-PLC (AI Product Lifecycle) System
+# AI-PLC
 
-AI-PLCは、PMBOKの知識体系をAIエージェント向けに再設計した4ステージパイプライン。
-Claude Code / Cursor / Codex 環境で動作するスキル群として提供される。
+AI-PLC は、Goal から成果物生成までを 4 Stage で進める local-first パイプライン。
+背景説明は [docs/AI-PLC-CORE-OVERVIEW.md](../../../docs/AI-PLC-CORE-OVERVIEW.md) を参照する。
 
-## 基本方針
+## Stages
 
-- ローカルファイルを正本として扱う
-- Notion など特定SaaSへの依存を持たない
-- 外部同期は `sync_targets` が明示された場合のみ行う
+1. `01-collection/SKILL.md`
+   - Goal を受け取り、Scope と Context を初期化する
+2. `02-inception/SKILL.md`
+   - Goal を Task と Sub-Layer に分解する
+3. `03-construction/SKILL.md`
+   - Task 実行用の Agent 定義を作る
+4. `04-operation/SKILL.md`
+   - Task を実行し、成果物と知見を反映する
 
-## 4ステージパイプライン
+## Core Principles
 
-| Stage | Skill | 概要 |
-|-------|-------|------|
-| 1. Collection | `01-collection/SKILL.md` | Goal設定・Context収集・Execution Context確立 |
-| 2. Inception | `02-inception/SKILL.md` | Goal分析・再帰的分解・Backlog生成 |
-| 3. Construction | `03-construction/SKILL.md` | Harness（実行スキル）生成・Agent定義 |
-| 4. Operation | `04-operation/SKILL.md` | タスク実行・成果物生成・Post-Deliver Propagation |
+- local-first
+- explicit sync
+- context as asset
+- adaptive workflow
+- verification before propagation
 
-## 関連ファイル
+## Required Rules
 
-### Persistent Memory（`{{agent_home}}/` 直下）
-- `soul.md` — AIの行動原則・アイデンティティ
-- `user.md` — ユーザーモデル
-- `memory.md` — 蓄積型知見 → wiki/ へのポインタ
+- `core/rules/ai-plc-system.md`
+- `core/rules/ai-plc-session.md`
+- `core/rules/ai-plc-adaptive.md`
 
-### Rules（tool-local rules directory）
-- `ai-plc-system.md` — ルートシステムルール（§1〜§20）
-- `ai-plc-session.md` — セッション管理ルール
-- `ai-plc-adaptive.md` — Adaptive Workflow + 深度判定
+## Main Files
 
-### Templates（`templates/` 配下）
-- `templates/roles/` — ロールテンプレート（PM / architect / developer / content / tech_lead / generic）
-- `templates/agents/` — エージェントテンプレート（research / implementation / coding / review / content / operation / task_patterns）
+- `intent.yaml`
+- `context.yaml`
+- `backlog.yaml`
+- `Context/`
+- `Agents/`
+- `Documents/`
 
-### Knowledge Wiki（`{{agent_home}}/wiki/`）
-- `index.md` — 全トピック索引
-- トピックページ群（運用知見・判断パターン・PJ横断の学び）
+## Naming
 
-## 命名規則
-
-| プレフィクス | 体系 | 例 |
-|---|---|---|
-| SKL_plc_* | Skills | SKL_plc_01_collection |
-| RUL_plc_* | Rules | RUL_plc_system |
-| TPL_* | Templates | TPL_role_developer |
-| AGT_plc_* | Agents | AGT_plc_linter |
-
-## コア原理
-
-- **Context Cascade** — 親→子スコープへの3分類コンテキスト伝播（immutable / overridable / local）
-- **Fractal Decomposition** — Goalの再帰的分解とSub-Agent Scope生成
-- **Adaptive Workflow** — Simple / Standard / Complex の3段階深度自動判定
-- **Self-Describing Task** — コンテキスト付きタスク委譲構造
+- `SKL_plc_*`
+- `RUL_plc_*`
+- `ROL_plc_*`
+- `AGT_plc_*`
