@@ -3,53 +3,7 @@
 PMBOKの知識体系をAIエージェント向けに再設計した**4ステージパイプライン**。  
 Claude Code / Cursor / Codex の各環境にインストールでき、既存の設定を壊しません。
 
-## 方針
 
-- **Local-first** — `intent.yaml` / `backlog.yaml` / `context.yaml` / `Documents/` を正本として運用
-- **Notion非依存** — Notion は必須ではなく、外部同期が必要な場合のみ任意で連携
-- **External Syncは任意** — `sync_targets` 未設定時は同期せず、ローカル運用だけで完結
-
-## 論理パス
-
-- `{{agent_home}}` は利用中ツールのローカル作業ディレクトリを表す
-- 対応:
-  - Claude Code → `.claude`
-  - Cursor → `.cursor`
-  - Codex → `.codex`
-- rules / skills / docs の本文では、ツール別パスの列挙ではなく `{{agent_home}}` を使う
-
-## 新ツール追加時の対応
-
-- ルール:
-  - `{{agent_home}}` の対応表が書かれているファイルには、新ツール追加時に追記が必要
-  - `{{agent_home}}` を本文で使っているだけのファイルは、原則そのままでよい
-  - 実パスを環境別に説明しているファイルは、新ツール追加時に追記が必要
-
-| ファイル | `{{agent_home}}` の役割 | 追記要否 | 追記内容 |
-|----------|-------------------------|----------|----------|
-| `README.md` | 対応表の定義元 | 必須 | 対応表と導入手順 |
-| `core/rules/ai-plc-system.md` | 対応表の定義元 | 必須 | 対応表 |
-| `claude/AGENTS.md.template` | 対応表の定義元 | 必須 | 対応表 |
-| `docs/MIGRATION-NOTION-REMOVAL.md` | 対応表の定義元 | 必須 | 対応表 |
-| `templates/memory.md` | 本文で利用 | 不要 | 原則なし |
-| `core/skills/ai-plc/README.md` | 本文で利用 | 不要 | 原則なし |
-| `core/skills/ai-plc/01-collection…` | 本文で利用 | 不要 | 原則なし |
-| `core/skills/ai-plc/04-operation…` | 本文で利用 | 不要 | 原則なし |
-
-| ファイル | 実パスの役割 | 追記要否 | 追記内容 |
-|----------|--------------|----------|----------|
-| `install.sh` | installer 振り分け | 必須 | 選択肢と呼び出し |
-| `install-<tool>.sh` | 新ツール installer 本体 | 必須 | 新規作成 |
-| `uninstall.sh` | 削除対象の列挙 | 必須 | 削除対象と除外案内 |
-| `README.md` | 実パスの利用者向け説明 | 必須 | Quick Start と配置一覧 |
-| `<tool>/...` | ツール固有資産 | 条件付 | ルールやテンプレート追加 |
-| `claude/CLAUDE.md.template` | Claude専用説明 | 通常不要 | 共通化時のみ調整 |
-| `cursor/rules/*.mdc` | Cursor専用ルール形式 | 条件付 | 同種ツールなら追加 |
-
-- 追加後の確認:
-  - `bash -n install.sh install-cc.sh install-cursor.sh install-codex.sh install-<tool>.sh uninstall.sh`
-  - `./install-<tool>.sh --dry-run --target /tmp/ai-plc-<tool>-test`
-  - `./install.sh --dry-run --target /tmp/ai-plc-universal-test <tool>`
 
 ## パイプライン概要
 
@@ -230,6 +184,48 @@ Cursor を使う場合:
 
 `.claude/*` / `.cursor/*` / `.codex/*` 配下の `soul.md`, `user.md`, `memory.md`, `wiki/` はカスタマイズ済みの可能性があるため削除されません。
 
+## 論理パス
+
+- `{{agent_home}}` は利用中ツールのローカル作業ディレクトリを表す
+- 対応:
+  - Claude Code → `.claude`
+  - Cursor → `.cursor`
+  - Codex → `.codex`
+- rules / skills / docs の本文では、ツール別パスの列挙ではなく `{{agent_home}}` を使う
+
+## 新ツール追加時の対応
+
+- ルール:
+  - `{{agent_home}}` の対応表が書かれているファイルには、新ツール追加時に追記が必要
+  - `{{agent_home}}` を本文で使っているだけのファイルは、原則そのままでよい
+  - 実パスを環境別に説明しているファイルは、新ツール追加時に追記が必要
+
+| ファイル | `{{agent_home}}` の役割 | 追記要否 | 追記内容 |
+|----------|-------------------------|----------|----------|
+| `README.md` | 対応表の定義元 | 必須 | 対応表と導入手順 |
+| `core/rules/ai-plc-system.md` | 対応表の定義元 | 必須 | 対応表 |
+| `claude/AGENTS.md.template` | 対応表の定義元 | 必須 | 対応表 |
+| `docs/MIGRATION-NOTION-REMOVAL.md` | 対応表の定義元 | 必須 | 対応表 |
+| `templates/memory.md` | 本文で利用 | 不要 | 原則なし |
+| `core/skills/ai-plc/README.md` | 本文で利用 | 不要 | 原則なし |
+| `core/skills/ai-plc/01-collection…` | 本文で利用 | 不要 | 原則なし |
+| `core/skills/ai-plc/04-operation…` | 本文で利用 | 不要 | 原則なし |
+
+| ファイル | 実パスの役割 | 追記要否 | 追記内容 |
+|----------|--------------|----------|----------|
+| `install.sh` | installer 振り分け | 必須 | 選択肢と呼び出し |
+| `install-<tool>.sh` | 新ツール installer 本体 | 必須 | 新規作成 |
+| `uninstall.sh` | 削除対象の列挙 | 必須 | 削除対象と除外案内 |
+| `README.md` | 実パスの利用者向け説明 | 必須 | Quick Start と配置一覧 |
+| `<tool>/...` | ツール固有資産 | 条件付 | ルールやテンプレート追加 |
+| `claude/CLAUDE.md.template` | Claude専用説明 | 通常不要 | 共通化時のみ調整 |
+| `cursor/rules/*.mdc` | Cursor専用ルール形式 | 条件付 | 同種ツールなら追加 |
+
+- 追加後の確認:
+  - `bash -n install.sh install-cc.sh install-cursor.sh install-codex.sh install-<tool>.sh uninstall.sh`
+  - `./install-<tool>.sh --dry-run --target /tmp/ai-plc-<tool>-test`
+  - `./install.sh --dry-run --target /tmp/ai-plc-universal-test <tool>`
+  - 
 ## License
 
 MIT License — See [LICENSE](LICENSE) for details.
