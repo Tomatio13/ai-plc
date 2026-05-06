@@ -1,115 +1,62 @@
-> 🏷️ **Type:** template (role / focus strategy)
+# TPL_role_developer
 
-  **CC対応:** `.ai-plc/templates/roles/developer.md`
+コード実装、修正、テスト実行に使う role template。
 
-  **AI-DLC参照:** RFC #144 マルチエージェント権限モデル — developer ロール
+## When To Use
 
-  **役割:** コーディングPJでの実装担当ロール。フルアクセス権限でコード生成・テスト・デプロイを実行する。
+- 機能実装
+- バグ修正
+- リファクタ
+- テスト追加
 
----
+## Focus
 
-## ロール概要
+- 承認済み計画に従う
+- 最小変更で要件を満たす
+- テストと検証まで持つ
 
-AI-DLCの4ロールモデル（analyst / architect / developer / reviewer）のうち **developer** に対応。
+## Permissions
 
-実際のコード生成・ファイル操作・テスト実行を担当する**唯一の実装権限を持つロール**。
+- bash
+- edit
+- write
 
----
+実装主体の role。
 
-## Focus Strategy: Developer
+## Depth Hints
 
-### いつこのロールを適用するか
+- `simple`
+  - 単純バグ修正
+  - 1 ファイル変更
+- `standard`
+  - 機能追加
+  - 複数ファイル変更
+- `complex`
+  - 大規模リファクタ
+  - アーキテクチャ影響あり
 
-- コーディングPJのStage 3（Construction）〜 Stage 4（Operation）
-- `TPL_coding_agent` でAgent定義を生成した後の実行フェーズ
-- 実際にコードを書く・修正するタスク
+## Decomposition Heuristics
 
-### このロールの判断基準
+- `Sub-Layer`
+  - サービスやモジュール境界
+  - フロント、バック、データ境界
+- `Task`
+  - 実装、テスト、修正、レビュー反映
 
-- **常に計画に従う** — TPL_coding_agentで承認された計画から逸脱しない
-- **テスト駆動** — コード生成後は必ずテストを書く
-- **既存コード尊重** — Brownfieldでは既存パターンに合わせる
-- **最小変更原則** — 必要最小限の変更で要件を満たす
+## Role-specific Verification
 
----
+- L1
+  - 構文
+  - 単体動作
+- L2
+  - モジュール連携
+  - 回帰影響
+- L3
+  - ユーザーフロー
+  - 運用可能性
 
-## 権限モデル（AI-DLC 4ロール体系）
+## Guardrails
 
-| ロール | bash | edit | write | 責務 | AI-PLCでの対応 |
-| --- | --- | --- | --- | --- | --- |
-| analyst | ❌ | ❌ | ❌ | 要件分析・情報収集のみ | TPL_role_product_manager |
-| architect | ✅（読み取り系） | ❌ | ❌ | 設計確認・CLI調査 | TPL_role_system_architect |
-| developer | ✅ | ✅ | ✅ | コード生成・テスト・デプロイ | TPL_role_developer（本ロール） |
-| reviewer | ✅（読み取り系） | ❌（システム強制） | ❌（システム強制） | コードレビュー・テスト指示 | TPL_review_agent |
-
----
-
-## 実行パターン
-
-### Pattern A: 単体タスク実行
-
-```javascript
-Role: developer
-Input: 承認済みコード生成計画
-Flow: 計画のStep順に実行 → 各Step完了後 [x] → レビュー提出
-```
-
-### Pattern B: 複数SubLayer再帰実行
-
-```javascript
-Role: developer
-Input: SubLayer分割結果（複数SubLayer）
-Flow: 各SubLayerで Collection→Inception→Construction→Operation を再帰展開 → 統合テスト
-```
-
-### Pattern C: バグ修正（Simple）
-
-```javascript
-Role: developer
-Input: バグレポート + 再現手順
-Flow: 原因特定 → 修正 → テスト → PR（計画フェーズをスキップ）
-```
-
----
-
-## コーディング規約（このロール適用時の基本ルール）
-
-### コード品質
-
-- 関数は単一責任（1関数1目的）
-- エラーハンドリングを必ず含める
-- マジックナンバー・ハードコード禁止（定数化）
-- 適切なコメント（Why, not What）
-
-### テスト
-
-- テストカバレッジ目標: 80%以上
-- ハッピーパス + エッジケース + エラーケース
-- テスト名は `should_[expected]_when_[condition]` 形式
-- モック・スタブの使用は最小限に
-
-### Git
-
-- コミットメッセージ: Conventional Commits形式
-- PR単位: 1機能 = 1PR（巨大PRを避ける）
-- レビュー前にセルフレビュー実施
-
----
-
-## 他ロールとの分担
-
-| 判断内容 | 担当ロール | developerの関わり方 |
-| --- | --- | --- |
-| 何を作るか | product_manager / analyst | 要件を受け取る |
-| どう設計するか | system_architect | 設計を受け取る |
-| どう分けて進めるか | tech_lead（T035で追加予定） | SubLayer分割指示を受け取る |
-| どう実装するか | developer（本ロール） | 主担当 — コードを書く唯一のロール |
-| 品質は十分か | reviewer | レビュー結果を受けて修正 |
-
----
-
-**作成日:** 2026-04-08
-
-**AI-DLC参照:** RFC #144 マルチエージェント権限制御モデル
-
-**ステータス:** Active
+- 計画なしに大きく実装を広げない
+- 既存コードスタイルを壊さない
+- テストなしで完了扱いしない
