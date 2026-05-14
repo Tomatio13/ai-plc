@@ -90,6 +90,7 @@ cd ai-plc
 | 配置先 | 内容 |
 |--------|------|
 | `.codex/skills/ai-plc/` | 4ステージスキル + テンプレート群 |
+| `.codex/rules/ai-plc-*.md` | システム・セッション・Adaptiveルール |
 | `AGENTS.md` | AI-PLCセクションをマージ（既存保持） |
 | `.codex/soul.md` | AI行動原則テンプレート（新規のみ） |
 | `.codex/user.md` | ユーザーモデルテンプレート（新規のみ） |
@@ -129,7 +130,7 @@ ai-plc/
 ├── cursor/                   # Cursor固有
 │   └── rules/                # .mdcフォーマットルール
 │
-├── codex/                    # CodexはAGENTS.mdと.codex/を使用
+├── codex/                    # CodexはAGENTS.mdと .codex/ を使用
 │   └── (shared via template)
 │
 ├── templates/                # ジェネリックテンプレート
@@ -168,7 +169,9 @@ Codex を使う場合:
 
 1. **`.codex/soul.md`** — AIの行動原則・アイデンティティ
 2. **`.codex/user.md`** — あなたのプロフィール・好み
-3. **`AGENTS.md`** — プロジェクト固有の設定を追記
+3. **`.codex/memory.md` / `.codex/wiki/`** — 永続知識の保存先
+4. **`.codex/rules/ai-plc-*.md`** — 共通ルールの確認と必要に応じた調整
+5. **`AGENTS.md`** — プロジェクト固有の設定を追記
 
 Cursor を使う場合:
 
@@ -191,7 +194,8 @@ Cursor を使う場合:
   - Claude Code → `.claude`
   - Cursor → `.cursor`
   - Codex → `.codex`
-- rules / skills / docs の本文では、ツール別パスの列挙ではなく `{{agent_home}}` を使う
+- runtime の rules / skills 本文では、ツール別パスの列挙ではなく `{{agent_home}}` を使う
+- `docs/` は配布対象ではないため、runtime 文書からは参照しない
 
 ## 新ツール追加時の対応
 

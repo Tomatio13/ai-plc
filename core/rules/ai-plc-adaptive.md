@@ -1,7 +1,6 @@
 # AI-PLC Adaptive Rule
 
 AI-PLC の workflow depth、mode、focus role、next action、backtrack を定義する runtime ルール。
-背景説明は [docs/AI-PLC-CORE-OVERVIEW.md](../../docs/AI-PLC-CORE-OVERVIEW.md) を参照する。
 
 ## 1. Workflow Depth
 
