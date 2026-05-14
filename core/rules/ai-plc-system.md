@@ -1,7 +1,6 @@
 # AI-PLC System Rule
 
 AI-PLC の全 `rules` と `skills` が前提とする共通 runtime ルール。
-背景説明と全体像は [docs/AI-PLC-CORE-OVERVIEW.md](../../docs/AI-PLC-CORE-OVERVIEW.md) を参照する。
 
 ## 1. Purpose
 

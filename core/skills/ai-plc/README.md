@@ -1,7 +1,6 @@
 # AI-PLC
 
 AI-PLC は、Goal から成果物生成までを 4 Stage で進める local-first パイプライン。
-背景説明は [docs/AI-PLC-CORE-OVERVIEW.md](../../../docs/AI-PLC-CORE-OVERVIEW.md) を参照する。
 
 ## Stages
 
@@ -24,9 +23,9 @@ AI-PLC は、Goal から成果物生成までを 4 Stage で進める local-firs
 
 ## Required Rules
 
-- `core/rules/ai-plc-system.md`
-- `core/rules/ai-plc-session.md`
-- `core/rules/ai-plc-adaptive.md`
+- `{{agent_home}}/rules/ai-plc-system.md`
+- `{{agent_home}}/rules/ai-plc-session.md`
+- `{{agent_home}}/rules/ai-plc-adaptive.md`
 
 ## Main Files
 

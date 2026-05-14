@@ -102,6 +102,9 @@ done
 echo ""
 echo "Codex files:"
 safe_remove "$TARGET_DIR/.codex/skills/ai-plc"
+for rule in "$TARGET_DIR"/.codex/rules/ai-plc-*.md; do
+    safe_remove "$rule"
+done
 
 echo ""
 echo "Shared files:"

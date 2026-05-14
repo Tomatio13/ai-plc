@@ -14,14 +14,14 @@ Stage 1. Goal を受け取り、実行 Scope と Context を初期化する。
 
 ## Required Context
 
-- `core/skills/ai-plc/README.md`
-- `core/rules/ai-plc-system.md`
-- `core/rules/ai-plc-session.md`
-- `core/rules/ai-plc-adaptive.md`
-- `core/skills/ai-plc/templates/`
-- `core/skills/ai-plc/templates/TPL_intent.yaml`
-- `core/skills/ai-plc/templates/TPL_context.yaml`
-- `core/skills/ai-plc/templates/TPL_variables.yaml`
+- `../README.md`
+- `{{agent_home}}/rules/ai-plc-system.md`
+- `{{agent_home}}/rules/ai-plc-session.md`
+- `{{agent_home}}/rules/ai-plc-adaptive.md`
+- `../templates/`
+- `../templates/TPL_intent.yaml`
+- `../templates/TPL_context.yaml`
+- `../templates/TPL_variables.yaml`
 
 ## Inputs
 
@@ -48,13 +48,13 @@ Stage 1. Goal を受け取り、実行 Scope と Context を初期化する。
    - 既存 Scope の再初期化
 2. Goal を分析し、`workflow_depth` と `mode` を決める
 3. Scope の標準ディレクトリ構造を作る
-4. `core/skills/ai-plc/templates/TPL_intent.yaml` をベースに `intent.yaml` を作成または更新する
+4. `../templates/TPL_intent.yaml` をベースに `intent.yaml` を作成または更新する
 5. Context を収集する
    - workspace search を優先
    - 必要時だけ外部情報を使う
 6. `Context/` に実体を保存する
-7. `core/skills/ai-plc/templates/TPL_context.yaml` をベースに `context.yaml` を生成または更新する
-8. `platform_builder` の場合だけ `core/skills/ai-plc/templates/TPL_variables.yaml` をベースに `variables.yaml` を作る
+7. `../templates/TPL_context.yaml` をベースに `context.yaml` を生成または更新する
+8. `platform_builder` の場合だけ `../templates/TPL_variables.yaml` をベースに `variables.yaml` を作る
 9. Mob Checkpoint で完了確認と次 Stage 提案を出す
 
 ## Required Behavior
@@ -62,9 +62,9 @@ Stage 1. Goal を受け取り、実行 Scope と Context を初期化する。
 - `workflow_depth` は `simple` / `standard` / `complex` のいずれかに正規化する
 - Sub-Layer 作成時は Context Cascade を守る
 - `sync_targets` の既定値は空配列とする
-- `intent.yaml` の初期構造は `core/skills/ai-plc/templates/TPL_intent.yaml` を正本として使う
-- `context.yaml` の初期構造は `core/skills/ai-plc/templates/TPL_context.yaml` を正本として使う
-- `variables.yaml` の初期構造は `core/skills/ai-plc/templates/TPL_variables.yaml` を正本として使う
+- `intent.yaml` の初期構造は `../templates/TPL_intent.yaml` を正本として使う
+- `context.yaml` の初期構造は `../templates/TPL_context.yaml` を正本として使う
+- `variables.yaml` の初期構造は `../templates/TPL_variables.yaml` を正本として使う
 - 新規 Scope 作成時だけ Project Registry 登録を検討する
 - 再初期化では既存成果物を不用意に上書きしない
 

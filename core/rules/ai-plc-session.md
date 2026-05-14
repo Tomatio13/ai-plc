@@ -1,7 +1,6 @@
 # AI-PLC Session Rule
 
 AI-PLC のセッション分割、引き継ぎ、完了報告、Mob Checkpoint 出力を定義する runtime ルール。
-背景説明は [docs/AI-PLC-CORE-OVERVIEW.md](../../docs/AI-PLC-CORE-OVERVIEW.md) を参照する。
 
 ## 1. Split Triggers
 
@@ -25,7 +24,7 @@ AI-PLC のセッション分割、引き継ぎ、完了報告、Mob Checkpoint �
 
 新しいスレッドには最低限次を渡す。
 
-- `core/skills/ai-plc/README.md`
+- `{{agent_home}}/skills/ai-plc/README.md`
 - `RUL_plc_system`
 - 対象 Scope の `intent.yaml`
 - 対象 Scope の `context.yaml`
